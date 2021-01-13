@@ -13,7 +13,7 @@ const softRemove = async function <E extends AnyTarget, S = {}, I = {}>( this: B
     return bridge( response.data )
   }
   const repo = await this.bridge().getRepo()
-  return await repo.softRemove( this )
+  return await repo.softRemove( this, { reload: true } )
 }
 
 export const description = {

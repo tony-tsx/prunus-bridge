@@ -13,7 +13,7 @@ const recovery = async function <E extends AnyTarget, S = {}, I = {}>( this: Bri
     return bridge( response.data )
   }
   const repo = await this.bridge().getRepo()
-  return await repo.recover( this )
+  return await repo.recover( this, { reload: true } )
 }
 
 export const description = {
