@@ -10,7 +10,7 @@ const recovery = async function <E extends AnyTarget, S = {}, I = {}>( this: Bri
     const axios = await bridge.getAxios()
     const params = { method }
     const response = await axios.put( bridge.uri, this, { params } )
-    return bridge( response.data )
+    return Object.assign( this, response.data )
   }
   const repo = await this.bridge().getRepo()
   return await repo.recover( this, { reload: true } )
