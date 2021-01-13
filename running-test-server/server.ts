@@ -2,7 +2,7 @@ import cors from 'cors'
 import Express from 'express'
 import { createConnection } from 'typeorm'
 
-import TypeORMBridge from '../dist'
+import TypeORMBridge from '../src'
 import User from './bridges/User'
 
 const app = Express()

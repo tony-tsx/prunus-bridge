@@ -8,9 +8,7 @@ namespace Bridge {
   export import Instance = BridgeInstance
 }
 
-type AnyObject = { [key: string]: any }
-
-export type AnyBridge = Bridge<any, AnyObject, AnyObject>
+export type AnyBridge = Bridge<AnyTarget, Record<string | number, any>, Record<string | number, any>>
 
 type Bridge<E extends AnyTarget, S = {}, I = {}> = Bridge.Static<E, S, I>
 

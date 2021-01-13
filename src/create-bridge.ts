@@ -37,7 +37,7 @@ const constructor = ( name: string ) => `
   } )()
 `
 
-const createBridge = <E extends AnyTarget, S, I>(
+const createBridge = <E extends AnyTarget, S = {}, I = {}>(
   config: Config<E, S, I>
 ): Bridge<E, S, I> => {
   // eslint-disable-next-line no-eval

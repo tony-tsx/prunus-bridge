@@ -1,4 +1,4 @@
-import create from '../../dist/create-bridge'
+import create from '../../src/create-bridge'
 
 const calcAge = ( from: Date ) => {
   if ( !from ) return NaN
