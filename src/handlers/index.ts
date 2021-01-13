@@ -47,6 +47,8 @@ const _ = <
 }>( bridge: BridgeStatic<any>, object: T, def?: keyof T ): RequestHandler<any, any, any, any> => {
   const keys = Object.keys( object )
   return ( req, res, next ) => {
+    // @ts-ignore
+    ( ( ( req.bridge ??= {} ).methods ??= [] ) ).push( ...keys )
     try {
       const method = req.query.method || def
       if ( !method || !keys.includes( method ) ) next()
@@ -80,23 +82,32 @@ const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
 
   router.use( parserOperations( 'options', 'criteria', 'conditions' ) )
 
+  const fallHandler: RequestHandler = ( req, res, next ) => {
+    // @ts-ignore
+    const methods: string[] | undefined = req.bridge?.methods
+    if ( !methods ) next()
+    else res.status( 404 ).json( { message: 'method not find, please check list of methods', methods } )
+  }
+
   router.route( bridge.uri )
     .get( _( bridge, _f, 'find' ) )
     .get( _( bridge, t_g, 'count' ) )
     .post( _( bridge, _i, 'insert' ) )
     .put( _( bridge, _u, 'update' ) )
+    .put( _( bridge, i_p ) )
     .delete( _( bridge, _d, 'delete' ) )
     .delete( _( bridge, t_d ) )
     .delete( _( bridge, i_d ) )
+    .all( fallHandler )
 
   router.route( `${bridge.uri}/:id` )
     .get( _( bridge, __f, 'findOne' ) )
     .put( _( bridge, __u, 'findOneAndUpdate' ) )
-    .put( _( bridge, i_p ) )
     .delete( _( bridge, __d, 'findOneAndDelete' ) )
+    .all( fallHandler )
 
-  router.put( `${bridge.uri}/:property`, _( bridge, t_p, 'increment' ) )
-  router.put( `${bridge.uri}/:property/:value`, _( bridge, t_p, 'increment' ) )
+  router.put( `${bridge.uri}/:property`, _( bridge, t_p, 'increment' ), fallHandler )
+  router.put( `${bridge.uri}/:property/:value`, _( bridge, t_p, 'increment' ), fallHandler )
 
   router.use( ( error: any, _req: Request, res: Response, _next: NextFunction ) => {
     res.status( 500 ).json( error )
