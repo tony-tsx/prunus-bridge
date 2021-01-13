@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "172.17.0.3",
+  "username": "root",
+  "password": "root",
+  "database": "blank_project",
+  "synchronize": false,
+  "entities": [ "running-test-server/entities/**/*.ts" ],
+  "cli": {
+    "entitiesDir": "running-test-server/entities"
+  },
+  "logging": true,
+  "logger": "file"
+}

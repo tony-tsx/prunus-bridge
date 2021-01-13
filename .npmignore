@@ -1,0 +1,10 @@
+src
+running-test-server
+running-test-web
+tsconfig.json
+tsconfig.webpack.json
+webpack.config.ts
+node_modules
+ormconfig.json
+.*
+*.log
