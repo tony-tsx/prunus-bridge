@@ -1,6 +1,8 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express'
 
 import { _require } from '../helpers/_import'
+import save from '../methods/save'
+import softRemove from '../methods/softRemove'
 import { BridgeRequestHandler } from '../types/bridge-handler'
 import BridgeStatic from '../types/bridge-static'
 import _delete from './delete/delete'
@@ -22,6 +24,8 @@ import insert from './insert/insert'
 import insertAndFind from './insert/insertAndFind'
 import insertOne from './insert/insertOne'
 import insertOneAndFind from './insert/insertOneAndFind'
+import recovery from './instance/recovery'
+import remove from './instance/remove'
 import parserOperations from './parser-options'
 import clear from './tools/clear'
 import count from './tools/count'
@@ -66,6 +70,9 @@ const t_p = { increment, decrement }
 
 const t_d = { clear }
 
+const i_d = { remove, softRemove }
+const i_p = { save, recovery }
+
 const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
   if ( typeof window !== 'undefined' ) throw new Error( '' )
   type Express = typeof import( 'express' )
@@ -80,10 +87,12 @@ const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
     .put( _( bridge, _u, 'update' ) )
     .delete( _( bridge, _d, 'delete' ) )
     .delete( _( bridge, t_d ) )
+    .delete( _( bridge, i_d ) )
 
   router.route( `${bridge.uri}/:id` )
     .get( _( bridge, __f, 'findOne' ) )
     .put( _( bridge, __u, 'findOneAndUpdate' ) )
+    .put( _( bridge, i_p ) )
     .delete( _( bridge, __d, 'findOneAndDelete' ) )
 
   router.put( `${bridge.uri}/:property`, _( bridge, t_p, 'increment' ) )
