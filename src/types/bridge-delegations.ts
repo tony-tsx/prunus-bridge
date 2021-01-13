@@ -9,7 +9,7 @@ namespace BridgeDelegations {
 }
 
 interface BridgeDelegations<E extends AnyTarget> {
-  getRepo: BridgeDelegations.getRepo<E>
+  getRepo: BridgeDelegations.getRepo<Extract.Entity<E>>
   getAxios: BridgeDelegations.getAxios
 }
 export default BridgeDelegations

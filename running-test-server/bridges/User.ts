@@ -1,4 +1,4 @@
-import TypeORMBridge from '../../dist'
+import create from '../../dist/create-bridge'
 
 const calcAge = ( from: Date ) => {
   if ( !from ) return NaN
@@ -13,9 +13,7 @@ const calcAge = ( from: Date ) => {
   ) ? age - 1 : age
 }
 
-type User = typeof import( '../entities/User' )['User']
-
-const User = TypeORMBridge.create<User, {}, { age: number }> ( {
+const User = create( {
   target: () => import( '../entities/User' ).then( module => module.User ),
   axios: async () => ( {} ) as any,
   uri: '/users',
@@ -29,7 +27,7 @@ const User = TypeORMBridge.create<User, {}, { age: number }> ( {
       configurable: true,
       enumerable: true
     }
-  } )
+  } ) as { age: number }
 } )
 
 export default User

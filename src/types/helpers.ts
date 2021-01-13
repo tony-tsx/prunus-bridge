@@ -1,20 +1,14 @@
 import { RequestHandler } from 'express'
-import TypeORM, { EntitySchema, ObjectType, FindConditions, ObjectID, Repository } from 'typeorm'
+import { FindConditions, ObjectID, Repository } from 'typeorm'
 
-export type Target<E> = TypeORM.EntityTarget<E>
+export type Target<E extends ( new ( ...args: any[] ) => any )> = E
 
 export type AnyTarget = Target<any>
 
 export namespace Extract {
   export type Entity<T extends AnyTarget> =
     T extends Target<infer E>
-      ? E extends ObjectType<infer T>
-        ? T
-        : E extends EntitySchema<infer T>
-          ? T
-          : E extends { type: infer T; name: string; }
-            ? T
-            : {}
+      ? E extends new ( ...args: any[] ) => infer T ? T : never
       : never
 
   export type Repo<T extends Target<any>> = Repository<Entity<T>>

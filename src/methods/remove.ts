@@ -14,7 +14,7 @@ const remove = async function <E extends AnyTarget, S = {}, I = {}>( this: Bridg
   }
   const bridge = this.bridge()
   const repo = await this.bridge().getRepo()
-  return bridge( await repo.remove( this ) )
+  return bridge( await repo.remove( this as any ) )
 }
 
 export const description = {

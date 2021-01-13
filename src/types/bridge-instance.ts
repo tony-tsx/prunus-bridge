@@ -15,8 +15,8 @@ type AnyObject = { [key: string]: any }
 export type AnyBridgeInstance = BridgeInstance<any, AnyObject, AnyObject>
 
 type BridgeInstance<E extends AnyTarget, Static = {}, Instance = {}> =
-  & BridgeInstance.Method<E, Static, Instance>
+  & ( Instance extends { [key: string]: any } ? Instance : {} )
   & BridgeInstance.Prop<E>
-  & Instance
+  & BridgeInstance.Method<E, Static, Instance>
 
 export default BridgeInstance
