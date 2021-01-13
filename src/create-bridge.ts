@@ -56,7 +56,7 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
   applyName( bridge, config )
   applyStatic( bridge )
 
-  Object.getOwnPropertyNames( config.prototype ).forEach( property => {
+  Object.getOwnPropertyNames( config.prototype ?? {} ).forEach( property => {
     Object.defineProperty(
       bridge.prototype,
       property,
