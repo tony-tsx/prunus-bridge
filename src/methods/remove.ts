@@ -9,7 +9,7 @@ const remove = async function <E extends AnyTarget, S = {}, I = {}>( this: Bridg
     const bridge = this.bridge()
     const axios = await bridge.getAxios()
     const params = { method }
-    const response = await axios.delete( bridge.uri, { params } )
+    const response = await axios.delete( bridge.uri, { params, data: this } )
     return bridge( response.data )
   }
   const bridge = this.bridge()

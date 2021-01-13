@@ -9,7 +9,7 @@ const softRemove = async function <E extends AnyTarget, S = {}, I = {}>( this: B
     const bridge = this.bridge()
     const axios = await bridge.getAxios()
     const params = { method }
-    const response = await axios.delete( bridge.uri, { params } )
+    const response = await axios.delete( bridge.uri, { params, data: this } )
     return bridge( response.data )
   }
   const repo = await this.bridge().getRepo()
