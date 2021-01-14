@@ -1,6 +1,6 @@
 {
   "name": "@cookiex/typeorm-bridge",
-  "version": "0.0.1-4d696c9.0",
+  "version": "0.0.1-2cfb9cb.0",
   "main": "dist/index.js",
   "repository": "https://github.com/dev-cookiex/typeorm-bridge.git",
   "author": "Tony <tony.js@zoho.eu>",
