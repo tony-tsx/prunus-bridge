@@ -24,7 +24,7 @@ const constructor = ( name: string ) => `
           return entity.map( bridge )
         else return new bridge( entity )
 
-      const self = Target ? Object.assing( new Target(), this ) : this
+      const self = Target ? Object.assign( new Target(), this ) : this
   
       Object.keys( entity ).forEach( key => {
         if ( isoDateRegEx.test( entity[key] ) ) entity[key] = new Date( entity[key] )
