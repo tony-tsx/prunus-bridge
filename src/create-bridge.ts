@@ -32,8 +32,9 @@ const constructor = ( name: string ) => `
 
       Object.assign( self, entity )
   
-      Object.keys( bridge.prototype ).forEach( key => {
-        Object.defineProperty( this, key, Object.getOwnPropertyDescriptor( bridge.prototype, key ) ?? {} )
+      Object.getOwnPropertyNames( bridge.prototype ).forEach( key => {
+        if ( key !== 'constructor' )
+          Object.defineProperty( self, key, Object.getOwnPropertyDescriptor( bridge.prototype, key ) ?? {} )
       } )
       
       return self
