@@ -54,8 +54,8 @@ const clientIsNull = () => mark( 'IsNull' )
 
 const clientRaw = ( raw: string ) => mark( 'Raw', raw )
 
-const mark = ( method: string, value?: any ) => {
-  if ( value ) return `${prefix}[${method}](${value})` as Operator
+const mark = ( method: Operators, value?: any ) => {
+  if ( value ) return `${prefix}[${method}](${value as str})` as Operator
   return `${prefix}[${method}]` as Operator
 }
 

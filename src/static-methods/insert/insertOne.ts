@@ -17,8 +17,7 @@ const insertOne = async function<E extends AnyTarget, S = {}, I = {}>(
     const response = await axios.post<InsertResult>( this.uri, data, { params } )
     return response.data
   }
-  const repo = await this.getRepo()
-  return await repo.insert( data )
+  return await this.insert( [ data ] )
 }
 
 export default insertOne

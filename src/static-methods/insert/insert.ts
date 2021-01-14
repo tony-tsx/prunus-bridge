@@ -1,6 +1,7 @@
 import { InsertResult } from 'typeorm'
 
 import isClientSide from '../../helpers/is-client-side'
+import mergeToTarget from '../../helpers/merge-to-target'
 import BridgeStatic from '../../types/bridge-static'
 import { query } from '../../types/bridge-static-insert'
 import { AnyTarget } from '../../types/helpers'
@@ -18,7 +19,11 @@ const insert = async function<E extends AnyTarget, S = {}, I = {}>(
     return response.data
   }
   const repo = await this.getRepo()
-  return await repo.insert( data )
+  return await repo.insert(
+    await Promise.all(
+      data.map( data => mergeToTarget( this, data ) )
+    )
+  )
 }
 
 export default insert

@@ -19,8 +19,7 @@ const save = async function <E extends AnyTarget, S = {}, I = {}>(
     return Object.assign( this, response.data )
   }
   const repo = await this.bridge().getRepo()
-  const Target = await this.bridge().getTarget()
-  return await repo.save( Object.assign( new Target(), this ), options )
+  return await repo.save( this, options )
 }
 
 export const description = {

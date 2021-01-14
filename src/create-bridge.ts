@@ -23,17 +23,20 @@ const constructor = ( name: string ) => `
         if ( Array.isArray( entity ) )
           return entity.map( bridge )
         else return new bridge( entity )
+
+      const self = Target ? Object.assing( new Target(), this ) : this
   
       Object.keys( entity ).forEach( key => {
         if ( isoDateRegEx.test( entity[key] ) ) entity[key] = new Date( entity[key] )
       } )
-      Object.assign( this, entity )
+
+      Object.assign( self, entity )
   
       Object.keys( bridge.prototype ).forEach( key => {
         Object.defineProperty( this, key, Object.getOwnPropertyDescriptor( bridge.prototype, key ) ?? {} )
       } )
       
-      return this
+      return self
     }
   } )()
 `
@@ -58,16 +61,17 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
   applyName( bridge, config )
   applyStatic( bridge )
 
+  let Target: any = null
   if ( !isClientSide() )
-    bridge.getTarget().then( Target => {
-      Object.getOwnPropertyNames( Target.prototype ).forEach( property => {
-        Object.defineProperty(
-          bridge.prototype,
-          property,
-          Object.getOwnPropertyDescriptor( Target.prototype, property ) ?? {}
-        )
-      } )
-    } )
+    bridge.getTarget().then( T => Target = T )
+
+  Object.defineProperty( bridge.prototype, Symbol.hasInstance, {
+    value( instance: any ) {
+      return Object.prototype.isPrototypeOf.call( this, instance )
+        ||
+      Target && instance instanceof Target 
+    }
+  } )
 
   Object.getOwnPropertyNames( config.prototype ?? {} ).forEach( property => {
     Object.defineProperty(
@@ -77,7 +81,9 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
     )
   } )
 
-  Object.assign( bridge, { op } )
+  Object.defineProperty( bridge, 'op', {
+    value: op, enumerable: false, writable: false, configurable: false
+  } )
 
   return bridge
 }
