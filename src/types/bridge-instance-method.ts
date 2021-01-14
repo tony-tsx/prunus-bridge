@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { RemoveOptions, SaveOptions } from 'typeorm'
+
 import BridgeInstance from './bridge-instance'
 import BridgeStatic from './bridge-static'
 import { AnyTarget } from './helpers'
 
 namespace BridgeInstanceMethod {
-  export type save<E extends AnyTarget, S = {}, I = {}> = () => Promise<BridgeInstance<E, S, I>>
-  export type remove<E extends AnyTarget, S = {}, I = {}> = () => Promise<BridgeInstance<E, S, I>>
-  export type softRemove<E extends AnyTarget, S = {}, I = {}> = () => Promise<BridgeInstance<E, S, I>>
-  export type recovery<E extends AnyTarget, S = {}, I = {}> = () => Promise<BridgeInstance<E, S, I>>
+  export type save<E extends AnyTarget, S = {}, I = {}> =
+    ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
+  export type remove<E extends AnyTarget, S = {}, I = {}> =
+    ( options?: RemoveOptions ) => Promise<BridgeInstance<E, S, I>>
+  export type softRemove<E extends AnyTarget, S = {}, I = {}> =
+    ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
+  export type recovery<E extends AnyTarget, S = {}, I = {}> =
+    ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
 
   export type bridge<E extends AnyTarget, S = {}, I = {}> = () => BridgeStatic<E, S, I>
 }

@@ -3,11 +3,16 @@ import User from './bridges/User'
 
 getConnection()
   .then( async conn => {
-    const one = await User.findOne( { where: { firstName: 'Antony' } } )
-    const data = JSON.parse( JSON.stringify( one ) )
-    data.firstName = 'Tony'
-    const user = User( data )
-    console.log( await user.save() )
+    await User.clear()
+    // const repo = getRepository( UserEntity )
+    const data = {
+      firstName: 'Tony',
+      lastName: 'Tea',
+      email: 'tony.js@zoho.eu',
+      birthDate: new Date()
+    }
+    const user = await User( data ).save()
+    // const user = await repo.save( Object.assign( new UserEntity(), data ) )
     console.log( user )
     conn.close()
   } )

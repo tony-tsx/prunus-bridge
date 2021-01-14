@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { AfterInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity( 'users' )
 export class User {
@@ -7,4 +7,10 @@ export class User {
   @Column( { name: 'last_name' } ) lastName: string
   @Column() email: string
   @Column( 'timestamp', { name: 'birth_date' } ) birthDate: Date
+
+  @AfterInsert()
+  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+  afterInsert() {
+    console.log( this )
+  }
 }

@@ -11,16 +11,14 @@
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "rootDir": "src",
-    "outDir": "dist",
-    "skipLibCheck": true
+    "strict": false,
+    // "rootDir": "src",
+    // "outDir": "dist"
   },
   "exclude": [
     "webpack.config.ts",
-    "running-test-server",
-    "running-test-web",
+    // "running-test-server",
+    // "running-test-web",
     "webpack.d.ts",
     "webpack.js",
     "dist"

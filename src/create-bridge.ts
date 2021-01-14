@@ -1,6 +1,7 @@
 import applyName from './applies/name'
 import applyStatic from './applies/static'
 import getRepo from './blinds/get-repo'
+import isClientSide from './helpers/is-client-side'
 import { description as recovery } from './methods/recovery'
 import { description as remove } from './methods/remove'
 import { description as save } from './methods/save'
@@ -51,10 +52,22 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
     bridge: { value: methodGetBridge.bind( bridge, bridge ), enumerable: false },
   } )
   bridge.getRepo = getRepo.bind( config )
+  bridge.getTarget = config.target as any
   bridge.getAxios = config.axios
   bridge.uri = config.uri
   applyName( bridge, config )
   applyStatic( bridge )
+
+  if ( !isClientSide() )
+    bridge.getTarget().then( Target => {
+      Object.getOwnPropertyNames( Target.prototype ).forEach( property => {
+        Object.defineProperty(
+          bridge.prototype,
+          property,
+          Object.getOwnPropertyDescriptor( Target.prototype, property ) ?? {}
+        )
+      } )
+    } )
 
   Object.getOwnPropertyNames( config.prototype ?? {} ).forEach( property => {
     Object.defineProperty(
