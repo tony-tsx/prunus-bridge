@@ -1,4 +1,4 @@
-import { RequestHandler, Request, Response, NextFunction } from 'express'
+import { RequestHandler } from 'express'
 
 import { _require } from '../helpers/_import'
 import { BridgeRequestHandler } from '../types/bridge-handler'
@@ -108,11 +108,6 @@ const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
 
   router.put( `${bridge.uri}/:property`, _( bridge, t_p, 'increment' ), fallHandler )
   router.put( `${bridge.uri}/:property/:value`, _( bridge, t_p, 'increment' ), fallHandler )
-
-  router.use( ( error: any, _req: Request, res: Response, _next: NextFunction ) => {
-    res.status( 500 ).json( error )
-    console.log( error.message )
-  } )
 
   return router
 }
