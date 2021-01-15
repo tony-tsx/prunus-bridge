@@ -15,6 +15,8 @@ const methodGetBridge = <T>( bridge: T ): T => bridge
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isoDateRegEx = /^([+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([.,]\d+(?!:))?)?(\17[0-5]\d([.,]\d+)?)?([zZ]|([+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const bkpIsClientSide = isClientSide
 
 const constructor = ( name: string ) => `
   ( function() {
@@ -26,7 +28,7 @@ const constructor = ( name: string ) => `
 
       const self = Target ? Object.assign( new Target(), this ) : this
 
-      if ( isClientSide() )
+      if ( bkpIsClientSide() )
         Object.keys( entity ).forEach( key => {
           if ( typeof entity[key] === 'string' && isoDateRegEx.test( entity[key] ) )
             entity[key] = new Date( entity[key] )
