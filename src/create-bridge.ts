@@ -25,10 +25,12 @@ const constructor = ( name: string ) => `
         else return new bridge( entity )
 
       const self = Target ? Object.assign( new Target(), this ) : this
-  
-      Object.keys( entity ).forEach( key => {
-        if ( isoDateRegEx.test( entity[key] ) ) entity[key] = new Date( entity[key] )
-      } )
+
+      if ( isClientSide() )
+        Object.keys( entity ).forEach( key => {
+          if ( typeof entity[key] === 'string' && isoDateRegEx.test( entity[key] ) )
+            entity[key] = new Date( entity[key] )
+        } )
 
       Object.assign( self, entity )
   
