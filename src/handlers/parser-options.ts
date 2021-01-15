@@ -4,6 +4,13 @@ import parser, { isOperator } from '../op/parser'
 
 const parserRecursive = ( object: any ): any => {
   if ( !object ) return object
+  if ( Array.isArray( object ) ) return object.map( value => {
+    if ( typeof value === 'string' && isOperator( value ) )
+      return parser( value )
+    else if ( value === 'object' )
+      return parserRecursive( value )
+    return value
+  } )
   return Object.entries( object ).reduce( ( object, [ key, value ] ) => {
     if ( typeof value === 'string' && isOperator( value ) )
       return { ...object, [key]: parser( value ) }
