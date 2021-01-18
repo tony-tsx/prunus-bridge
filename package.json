@@ -10,6 +10,16 @@
     "build": "rm -rf dist; tsc",
     "prepare": "yarn build"
   },
+  "tags": [
+    "typeorm",
+    "typescript",
+    "postgresql",
+    "client",
+    "server",
+    "command",
+    "commander",
+    "express"
+  ],
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
