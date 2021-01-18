@@ -27,6 +27,12 @@ const checkIfExists = ( path: PathLike ) => {
     .then( () => true, () => false )
 }
 
+const load = ( file: string ) => {
+  const module = require( file )
+  if ( module.default ) return module.default
+  return module
+}
+
 const getConnection = async ( connectionName?: string ) => {
   try {
     const TypeORM = await getTypeORM()
@@ -39,7 +45,7 @@ const getConnection = async ( connectionName?: string ) => {
       for await ( const file of files ) {
         const fullpath = resolve( file )
         const exists = await checkIfExists( resolve( file ) )
-        if ( exists ) return TypeORM.createConnection( require( fullpath ) )
+        if ( exists ) return TypeORM.createConnection( load( fullpath ) )
       }
       throw new Error( '' )
     }
@@ -60,7 +66,7 @@ getConnection.sync = ( connectionName?: string ) => {
         const fullpath = resolve( file )
         if (
           fs.existsSync( resolve( file ) )
-        ) return TypeORM.createConnection( require( fullpath ) )
+        ) return TypeORM.createConnection( load( fullpath ) )
       }
       throw new Error( '' )
     }
