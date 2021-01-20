@@ -28,7 +28,7 @@ const checkIfExists = ( path: PathLike ) => {
 }
 
 const load = ( file: string ) => {
-  const module = require( file )
+  const module = _require( file )
   if ( module.default ) return module.default
   return module
 }
