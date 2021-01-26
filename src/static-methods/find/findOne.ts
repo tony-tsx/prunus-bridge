@@ -18,7 +18,7 @@ const findOne = async function<E extends AnyTarget, S = {}, I = {}>(
   }
   const repo = await this.getRepo()
   const entity = await repo.findOne( id, options )
-  return this( entity )
+  return entity && this( entity )
 }
 
 export default findOne
