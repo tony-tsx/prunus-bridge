@@ -12,6 +12,17 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": false,
+    "rootDir": "src",
+    "outDir": "dist",
     "skipLibCheck": true
-  }
+  },
+  "exclude": [
+    "webpack.config.ts",
+    "test",
+    "webpack.d.ts",
+    "webpack.js",
+    "hooks.d.ts",
+    "hooks.js",
+    "dist"
+  ]
 }

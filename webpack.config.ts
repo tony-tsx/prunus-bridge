@@ -10,19 +10,12 @@ interface Configuration extends webpack.Configuration {
 }
 
 const config: Configuration = {
-  entry: path.resolve( 'running-test-web', 'index.tsx' ),
+  entry: path.resolve( 'test', 'browser', 'index.tsx' ),
   module: {
     rules: [
       {
         test: /\.[jt]sx?$/,
-        use: [
-          'babel-loader', {
-            loader: 'ts-loader',
-            options: {
-              configFile: 'tsconfig.webpack.json'
-            }
-          } 
-        ],
+        use: [ 'babel-loader', 'awesome-typescript-loader' ],
         exclude: [ path.resolve( 'node_modules' ), path.resolve( 'dist' ) ]
       }
     ],
