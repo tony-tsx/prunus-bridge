@@ -86,10 +86,12 @@ const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
     // @ts-ignore
     const methods: string[] | undefined = req.bridge?.methods
     if ( !methods ) next()
-    else res.status( 404 ).json( { message: 'method not find, please check list of methods', methods } )
+    else res.status( 404 ).json( { message: `method not find in '${bridge.name}', please check list of methods`, methods } )
   }
 
-  router.route( bridge.uri )
+  const uri = bridge.config.path ?? bridge.uri
+
+  router.route( uri )
     .get( _( bridge, _f, 'find' ) )
     .get( _( bridge, t_g, 'count' ) )
     .post( _( bridge, _i, 'insert' ) )
@@ -100,14 +102,14 @@ const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
     .delete( _( bridge, i_d ) )
     .all( fallHandler )
 
-  router.route( `${bridge.uri}/:id` )
+  router.route( `${uri}/:id` )
     .get( _( bridge, __f, 'findOne' ) )
     .put( _( bridge, __u, 'findOneAndUpdate' ) )
     .delete( _( bridge, __d, 'findOneAndDelete' ) )
     .all( fallHandler )
 
-  router.put( `${bridge.uri}/:property`, _( bridge, t_p, 'increment' ), fallHandler )
-  router.put( `${bridge.uri}/:property/:value`, _( bridge, t_p, 'increment' ), fallHandler )
+  router.put( `${uri}/:property`, _( bridge, t_p, 'increment' ), fallHandler )
+  router.put( `${uri}/:property/:value`, _( bridge, t_p, 'increment' ), fallHandler )
 
   return router
 }

@@ -1,13 +1,14 @@
 import applyName from './applies/name'
 import applyStatic from './applies/static'
 import getRepo from './blinds/get-repo'
+import { _import } from './helpers/_import'
 import isClientSide from './helpers/is-client-side'
 import { description as recovery } from './methods/recovery'
 import { description as remove } from './methods/remove'
 import { description as save } from './methods/save'
 import { description as softRemove } from './methods/softRemove'
 import op from './op'
-import Bridge from './types/bridge'
+import Bridge, { AnyBridge } from './types/bridge'
 import Config from './types/config'
 import { AnyTarget } from './types/helpers'
 
@@ -46,6 +47,8 @@ const constructor = ( name: string ) => `
   } )()
 `
 
+const bridges: AnyBridge[] = []
+
 const createBridge = <E extends AnyTarget, S = {}, I = {}>(
   config: Config<E, S, I>
 ): Bridge<E, S, I> => {
@@ -61,7 +64,8 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
   } )
   bridge.getRepo = getRepo.bind( config )
   bridge.getTarget = config.target as any
-  bridge.getAxios = config.axios
+  bridge.getAxios = config.axios || ( () => _import( 'axios' ) ) 
+  bridge.config = config
   bridge.uri = config.uri
   applyName( bridge, config )
   applyStatic( bridge )
@@ -90,7 +94,19 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
     value: op, enumerable: false, writable: false, configurable: false
   } )
 
+  ;( bridge.config.enumerable ?? true ) && bridges.push( bridge as any )
+  listeners.forEach( listener => listener( bridge as any ) )
+
   return bridge
 }
+
+const listeners: ( ( bridge: AnyBridge ) => void )[] = []
+
+createBridge.on = ( listener: ( bridge: AnyBridge ) => void ) => {
+  listeners.push( listener )
+  return () => listeners.splice( listeners.indexOf( listener ), 1 )
+}
+
+createBridge.list = bridges
 
 export default createBridge

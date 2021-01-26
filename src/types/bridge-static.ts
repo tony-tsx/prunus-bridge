@@ -8,6 +8,7 @@ import BridgeStaticFind from './bridge-static-find'
 import BridgeStaticInsert from './bridge-static-insert'
 import BridgeStaticTools from './bridge-static-tools'
 import BridgeStaticUpdate from './bridge-static-update'
+import Config from './config'
 import { AnyTarget, Extract } from './helpers'
 
 namespace BridgeStatic {
@@ -33,6 +34,7 @@ export interface IBridgeStatic<E extends AnyTarget, S = {}, I = {}> extends
     uri: string
     bindings: ( keyof Extract.Entity<E> )[]
     op: typeof op
+    config: Config<E, S, I>
   }
 
 type BridgeStatic<E extends AnyTarget, S = {}, I = {}> =
