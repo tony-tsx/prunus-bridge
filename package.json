@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "ts": "ts-node",
-    "build": "rm -rf dist; tsc",
+    "build": "rm -rf dist; tsc -p tsconfig.prod.json",
     "prepare": "yarn build"
   },
   "tags": [
