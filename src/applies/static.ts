@@ -76,7 +76,8 @@ const statics = {
   clear
 }
 
-const applyStatic = <E extends AnyTarget, S, I>( bridge: BridgeStatic<E, S, I> ) => {
+const applyStatic = <
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }>( bridge: BridgeStatic<E, S, I> ) => {
   Object.assign( bridge, statics )
 }
 

@@ -7,7 +7,11 @@ import { AnyTarget, Criteria } from '../../types/helpers'
 
 const method = 'update' as const
 
-const update = async function<E extends AnyTarget, S = {}, I = {}>(
+const update = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   criteria: Criteria<E>,
   data: query<E>

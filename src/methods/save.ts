@@ -6,7 +6,11 @@ import { AnyTarget } from '../types/helpers'
 
 const method = 'save' as const
 
-const save = async function <E extends AnyTarget, S = {}, I = {}>(
+const save = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeInstance<E, S, I>,
   { reload = true, transaction = false, listeners = true, ...restOptions }: SaveOptions = {}
 ) {

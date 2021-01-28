@@ -2,11 +2,12 @@ import BlindStaticMethod, { ExtractArgs, ExtractReturn } from '../types/blind-st
 import BridgeStatic from '../types/bridge-static'
 import { AnyTarget } from '../types/helpers'
 
-const callBlindStaticMethod = <B extends BlindStaticMethod<any, any>, E extends AnyTarget, S = {}, I = {}>(
-  bridge: BridgeStatic<E, S, I>,
-  blind: B,
-  ...args: ExtractArgs<B>
-): ExtractReturn<B> => {
+const callBlindStaticMethod = <B extends BlindStaticMethod<any, any>, E extends AnyTarget, S extends { [key: string]: any } = {}, I extends { [key: string]: any } = {}
+  >(
+    bridge: BridgeStatic<E, S, I>,
+    blind: B,
+    ...args: ExtractArgs<B>
+  ): ExtractReturn<B> => {
   if ( typeof window !== 'undefined' ) return blind.client( bridge, ...args )
   else return blind.server( bridge, ...args )
 }

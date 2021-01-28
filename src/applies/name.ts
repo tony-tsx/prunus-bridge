@@ -3,10 +3,14 @@ import BridgeStatic from '../types/bridge-static'
 import Config from '../types/config'
 import { AnyTarget } from '../types/helpers'
 
-const applyName = <E extends AnyTarget, S = {}, I = {}>(
-  bridge: BridgeStatic<E, S, I>,
-  config: Config<E, S, I>
-) => {
+const applyName = <
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  >(
+    bridge: BridgeStatic<E, S, I>,
+    config: Config<E, S, I>
+  ) => {
   if ( config.name )
     Object.defineProperty( bridge, 'name', { value: config.name } )
 

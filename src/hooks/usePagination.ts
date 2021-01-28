@@ -58,10 +58,11 @@ const reducer = <E extends AnyTarget, S extends any, I extends any>(
   }
 }
 
-const usePagination = <E extends AnyTarget, S, I>(
-  bridge: Bridge<E, S, I>,
-  options: Options = {}
-) => {
+const usePagination = <
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }>(
+    bridge: Bridge<E, S, I>,
+    options: Options = {}
+  ) => {
   const [ state, dispatch ] = useReducer( reducer, {
     count: NaN,
     loadingStatus: 'void',
@@ -119,7 +120,8 @@ const usePagination = <E extends AnyTarget, S, I>(
 }
 
 namespace usePagination {
-  export interface State<E extends AnyTarget, S, I> {
+  export interface State<
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }> {
     entities: BridgeInstance<E, S, I>[]
     nextPage: number
     loadingStatus: LoadingStatus

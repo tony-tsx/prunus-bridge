@@ -5,7 +5,11 @@ import { AnyTarget } from '../../types/helpers'
 
 const method = 'count' as const
 
-const count = async function<E extends AnyTarget, S = {}, I = {}>(
+const count = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   options: FindManyOptions<E>
 ) {

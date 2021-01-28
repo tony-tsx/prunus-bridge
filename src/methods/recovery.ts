@@ -6,7 +6,11 @@ import { AnyTarget } from '../types/helpers'
 
 const method = 'recovery' as const
 
-const recovery = async function <E extends AnyTarget, S = {}, I = {}>(
+const recovery = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeInstance<E, S, I>,
   { reload = true, transaction = false, listeners = true, ...restOptions }: SaveOptions = {}
 ) {

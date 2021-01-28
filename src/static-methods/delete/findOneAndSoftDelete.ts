@@ -5,7 +5,11 @@ import { AnyTarget, Extract } from '../../types/helpers'
 
 const method = 'findOneAndSoftDelete' as const
 
-const findOneAndSoftDelete = async function<E extends AnyTarget, S = {}, I = {}>(
+const findOneAndSoftDelete = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   id: any,
   options: FindManyOptions<E>

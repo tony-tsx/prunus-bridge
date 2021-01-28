@@ -14,7 +14,8 @@ export namespace Extract {
       ? E extends new ( ...args: any[] ) => infer T ? T : never
       : never
 
-  export type Repo<T extends AnyTarget> = Repository<Entity<T>>
+  export type Repo<T extends AnyTarget> = Repository<
+    Entity<T>>
 
   export type Request<H extends RequestHandler<any, any, any, any>> =
     H extends ( req: infer R ) => any ? R : never
@@ -23,7 +24,8 @@ export namespace Extract {
     H extends ( req: any, res: infer R ) => any ? R : never
 }
 
-export type Criteria<E extends AnyTarget> =
+export type Criteria<
+    E extends AnyTarget> =
   | string | number | Date | ObjectID
   | string[] | number[] | Date[] | ObjectID[]
   | FindConditions<Extract.Entity<E>>

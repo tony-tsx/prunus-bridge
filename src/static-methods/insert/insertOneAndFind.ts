@@ -7,7 +7,11 @@ import { AnyTarget } from '../../types/helpers'
 
 const method = 'insertOneAndFind' as const
 
-const insertOneAndFind = async function<E extends AnyTarget, S = {}, I = {}>(
+const insertOneAndFind = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   data: query<E>,
   options?: FindOneOptions<E>

@@ -3,7 +3,8 @@ import BridgeStatic from '../types/bridge-static'
 import callBlindStaticMethod from './call-blind-static-method'
 
 const bindBlindStaticMethod = <
-  B extends BridgeStatic<any, {}, {}>,
+  B extends BridgeStatic<any, {}, {}
+  >,
   M extends BlindStaticMethod<any, any>
 >( bridge: B, blind: M ) =>
     ( ...args: ExtractArgs<M> ): ExtractReturn<M> =>

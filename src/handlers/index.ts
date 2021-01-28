@@ -78,7 +78,8 @@ const i_p = { save, recovery }
 const createBridgeHandler = ( bridge: BridgeStatic<any> ) => {
   if ( typeof window !== 'undefined' ) throw new Error( '' )
   type Express = typeof import( 'express' )
-  const router = _require<Express>( 'express' ).Router()
+  const router = _require<
+    Express>( 'express' ).Router()
 
   router.use( parserOperations( 'options', 'criteria', 'conditions' ) )
 

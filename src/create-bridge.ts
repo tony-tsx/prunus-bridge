@@ -49,9 +49,13 @@ const constructor = ( name: string ) => `
 
 const bridges: AnyBridge[] = []
 
-const createBridge = <E extends AnyTarget, S = {}, I = {}>(
-  config: Config<E, S, I>
-): Bridge<E, S, I> => {
+const createBridge = <
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
+    config: Config<E, S, I>
+  ): Bridge<E, S, I> => {
   // eslint-disable-next-line no-eval
   const bridge: Bridge<E, S, I> = eval( constructor( config.name ?? 'Bridge' ) )
 
@@ -94,8 +98,8 @@ const createBridge = <E extends AnyTarget, S = {}, I = {}>(
     value: op, enumerable: false, writable: false, configurable: false
   } )
 
-  ;( bridge.config.enumerable ?? true ) && bridges.push( bridge as any )
-  listeners.forEach( listener => listener( bridge as any ) )
+  ;( bridge.config.enumerable ?? true ) && bridges.push( bridge as unknown as AnyBridge )
+  listeners.forEach( listener => listener( bridge as unknown as AnyBridge ) )
 
   return bridge
 }

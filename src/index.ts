@@ -10,11 +10,13 @@ type createHandler = typeof import( './create-handler' )
 namespace TypeORMBridge {
   export const create = createBridge
 
-  export const command = <E extends AnyTarget, S, I>( bridge: Bridge<E, S, I> ) =>
-    new ( _require<createCommand>( './cli', __dirname ).default )( bridge as any )
+  export const command = <
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }>( bridge: Bridge<E, S, I> ) =>
+      new ( _require<createCommand>( './cli', __dirname ).default )( bridge as any )
 
-  export const router = <E extends AnyTarget, S, I>( bridge: Bridge<E, S, I> ) =>
-    _require<createRouter>( './handlers', __dirname ).default( bridge as any )
+  export const router = <
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }>( bridge: Bridge<E, S, I> ) =>
+      _require<createRouter>( './handlers', __dirname ).default( bridge as any )
 
   export const handler = ( config?: Configuration ) =>
     _require<createHandler>( './create-handler', __dirname ).default( config )

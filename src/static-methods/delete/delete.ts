@@ -6,7 +6,11 @@ import { AnyTarget, Criteria } from '../../types/helpers'
 
 const method = 'delete' as const
 
-const _delete = async function<E extends AnyTarget, S = {}, I = {}>(
+const _delete = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   criteria: Criteria<E>
 ) {

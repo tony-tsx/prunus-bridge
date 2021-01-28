@@ -4,7 +4,11 @@ import { AnyTarget } from '../../types/helpers'
 
 const method = 'clear' as const
 
-const clear = async function<E extends AnyTarget, S = {}, I = {}>( this: BridgeStatic<E, S, I> ) {
+const clear = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>( this: BridgeStatic<E, S, I> ) {
   if ( isClientSide( this ) ) {
     const axios = await this.getAxios()
     const params = { method }

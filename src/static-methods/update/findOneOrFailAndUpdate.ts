@@ -6,7 +6,11 @@ import { AnyTarget, Extract } from '../../types/helpers'
 
 const method = 'findOneOrFailAndUpdate' as const
 
-const findOneOrFailAndUpdate = async function<E extends AnyTarget, S = {}, I = {}>(
+const findOneOrFailAndUpdate = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   id: any,
   options?: FindManyOptions<E>,

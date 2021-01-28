@@ -5,7 +5,8 @@ const createHandler = ( { static: _static = false }: Configuration = {} ) => {
   type Express = typeof import( 'express' )
   type createHandle = typeof import( './handlers' )
 
-  const { Router } = _require<Express>( 'express' )
+  const { Router } = _require<
+    Express>( 'express' )
   const createRouter = _require<createHandle>( './handlers', __dirname ).default
   const handler = Router()
 

@@ -5,7 +5,11 @@ import { AnyTarget, Extract } from '../../types/helpers'
 
 const method = 'findByIdsAndRestore' as const
 
-const findByIdsAndRestore = async function<E extends AnyTarget, S = {}, I = {}>(
+const findByIdsAndRestore = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   ids: any[],
   options?: FindManyOptions<E>

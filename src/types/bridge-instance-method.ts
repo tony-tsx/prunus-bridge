@@ -6,19 +6,43 @@ import BridgeStatic from './bridge-static'
 import { AnyTarget } from './helpers'
 
 namespace BridgeInstanceMethod {
-  export type save<E extends AnyTarget, S = {}, I = {}> =
+  export type save<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > =
     ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
-  export type remove<E extends AnyTarget, S = {}, I = {}> =
+  export type remove<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > =
     ( options?: RemoveOptions ) => Promise<BridgeInstance<E, S, I>>
-  export type softRemove<E extends AnyTarget, S = {}, I = {}> =
+  export type softRemove<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > =
     ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
-  export type recovery<E extends AnyTarget, S = {}, I = {}> =
+  export type recovery<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > =
     ( options?: SaveOptions ) => Promise<BridgeInstance<E, S, I>>
 
-  export type bridge<E extends AnyTarget, S = {}, I = {}> = () => BridgeStatic<E, S, I>
+  export type bridge<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > = () => BridgeStatic<E, S, I>
 }
 
-interface BridgeInstanceMethod<E extends AnyTarget, S = {}, I = {}> {
+interface BridgeInstanceMethod<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > {
   save: BridgeInstanceMethod.save<E, S, I>
   remove: BridgeInstanceMethod.remove<E, S, I>
 

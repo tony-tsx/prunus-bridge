@@ -14,4 +14,5 @@ export type BridgeRequestHandler<
   ResBody = any,
   ReqBody = any,
   ReqQuery = core.Query
-> = ( bridge: BridgeStatic<any>, ...args: Parameters<Express.RequestHandler<P, ResBody, ReqBody, ReqQuery>> ) => void
+> = ( bridge: BridgeStatic<any>, ...args: Parameters<
+    Express.RequestHandler<P, ResBody, ReqBody, ReqQuery>> ) => void

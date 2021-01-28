@@ -5,11 +5,19 @@ type AnyFunction = ( ...args: any[] ) => any
 
 type ExtractFunction<T extends AnyFunction | readonly any[], R = any> =
   T extends AnyFunction
-    ? T extends <E extends AnyTarget, S = {}, I = {}>( bridge: BridgeStatic<E, S, I>, ...args: any[] ) => any
+    ? T extends <
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  >( bridge: BridgeStatic<E, S, I>, ...args: any[] ) => any
       ? T
       : never
     : T extends readonly any[]
-      ? <E extends AnyTarget, S = {}, I = {}>( bridge: BridgeStatic<E, S, I>, ...args: T ) => R
+      ? <
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  >( bridge: BridgeStatic<E, S, I>, ...args: T ) => R
       : never
 
 type BlindStaticMethod<T extends AnyFunction | readonly any[], R = any> = {
@@ -17,7 +25,11 @@ type BlindStaticMethod<T extends AnyFunction | readonly any[], R = any> = {
   client: ExtractFunction<T, R>
 }
 
-type AnyBlindStaticMethodFunction<A extends readonly any[], R> = <E extends AnyTarget, S = {}, I = {}>(
+type AnyBlindStaticMethodFunction<A extends readonly any[], R> = <
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  >(
   bridge: BridgeStatic<E, S, I>, ...args: A
 ) => R
 

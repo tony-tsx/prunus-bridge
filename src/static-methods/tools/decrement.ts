@@ -7,7 +7,11 @@ import { AnyTarget } from '../../types/helpers'
 
 const method = 'decrement' as const
 
-const decrement = async function<E extends AnyTarget, S = {}, I = {}>(
+const decrement = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeStatic<E, S, I>,
   conditions: FindConditions<E>,
   property: string,

@@ -6,7 +6,11 @@ import { AnyTarget } from '../types/helpers'
 
 const method = 'remove' as const
 
-const remove = async function <E extends AnyTarget, S = {}, I = {}>(
+const remove = async function<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+>(
   this: BridgeInstance<E, S, I>,
   { listeners = true, transaction = false, ...restOptions }: RemoveOptions
 ) {

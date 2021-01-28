@@ -22,7 +22,11 @@ namespace BridgeStatic {
   export import Tools = BridgeStaticTools
 }
 
-export interface IBridgeStatic<E extends AnyTarget, S = {}, I = {}> extends
+export interface IBridgeStatic<
+  E extends AnyTarget,
+  S extends { [key: string]: any } = {},
+  I extends { [key: string]: any } = {}
+> extends
   BridgeStatic.Find<E, S, I>,
   BridgeStatic.Insert<E, S, I>,
   BridgeStatic.Update<E, S, I>,
@@ -37,7 +41,11 @@ export interface IBridgeStatic<E extends AnyTarget, S = {}, I = {}> extends
     config: Config<E, S, I>
   }
 
-type BridgeStatic<E extends AnyTarget, S = {}, I = {}> =
+type BridgeStatic<
+    E extends AnyTarget,
+    S extends { [key: string]: any } = {},
+    I extends { [key: string]: any } = {}
+  > =
   IBridgeStatic<E, S, I> & I
 
 export default BridgeStatic

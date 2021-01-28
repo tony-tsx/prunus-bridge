@@ -7,7 +7,8 @@ import { AnyTarget } from './helpers'
 /**
  * Configuration to create bridge
  */
-type Config<E extends AnyTarget, S, I> = {
+type Config<
+    E extends AnyTarget, S extends { [key: string]: any }, I extends { [key: string]: any }> = {
   /**
    * Get entity target
    */
