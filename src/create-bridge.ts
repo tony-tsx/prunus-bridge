@@ -48,6 +48,8 @@ const constructor = ( name: string ) => `
 `
 
 const bridges: AnyBridge[] = []
+const SIGNATURE = Symbol( 'signature' )
+const SIGNATURE_CONFIRM = Symbol( 'signature-confirm' )
 
 const createBridge = <
   E extends AnyTarget,
@@ -65,6 +67,7 @@ const createBridge = <
     save,
     softRemove,
     bridge: { value: methodGetBridge.bind( bridge, bridge ), enumerable: false },
+    [SIGNATURE]: { value: SIGNATURE_CONFIRM, enumerable: false, writable: false, configurable: false }
   } )
   bridge.getRepo = getRepo.bind( config )
   bridge.getTarget = config.target as any
@@ -82,7 +85,8 @@ const createBridge = <
     value( instance: any ) {
       return Object.prototype.isPrototypeOf.call( this, instance )
         ||
-      Target && instance instanceof Target 
+      Target && instance instanceof Target
+        || instance[SIGNATURE] === SIGNATURE_CONFIRM
     }
   } )
 
