@@ -88,7 +88,7 @@ const usePagination = <E extends AnyTarget, S, I>(
 
   const opts = useRef( omit( options, 'page', 'take', 'auto' ) )
 
-  const findOptions = useMemo( () => ( { ...opts.current, take, skip } ), [] )
+  const findOptions = useMemo( () => ( { ...opts.current, take, skip } ), [ take, skip ] )
 
   const next = useCallback( async () => {
     if ( enableFirstNext || enableNext ) {
