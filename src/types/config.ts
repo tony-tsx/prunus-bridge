@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios'
 
+import { BridgeHandlerOptions } from './bridge-handler'
 import BridgeInstance from './bridge-instance'
 import BridgeStatic from './bridge-static'
 import { AnyTarget } from './helpers'
@@ -57,6 +58,11 @@ type Config<
       ? ( this: BridgeInstance<E, S, I>, ...args: Parameters<I[K]> ) => ReturnType<I[K]>
       : I[K]
   }
+
+  /**
+   * Options to configure handlers
+   */
+  handlerOptions?: BridgeHandlerOptions
 }
 
 export default Config

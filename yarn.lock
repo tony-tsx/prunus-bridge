@@ -865,6 +865,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@cookiex/deep@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@cookiex/deep/-/deep-0.0.2.tgz#4405e77d574f6d570e6bd4865e57a3044974e23a"
+  integrity sha512-ZTLHugwApLVDpKcO0D1/tCL8Gz7qUE18ldU1DU4sKMQ5296zELffVkedg1rI4zEVpeIqoC2xBBPt46PwVwx//A==
+
 "@cookiex/eslint-config@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@cookiex/eslint-config/-/eslint-config-0.4.1.tgz#444fe4d89b43bbe36bc847fae32c2444ceced7ff"

@@ -3,8 +3,8 @@
   "host": "172.17.0.2",
   "username": "root",
   "password": "root",
-  "database": "blank_project",
-  "synchronize": true,
+  "database": "platform",
+  "synchronize": false,
   "entities": [ "test/common/entities/**/*.ts" ],
   "cli": {
     "entitiesDir": "test/common/entities"

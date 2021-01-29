@@ -27,7 +27,15 @@ const User = createBridge( {
       configurable: true,
       enumerable: true
     }
-  } )
+  } ),
+  handlerOptions: {
+    defaults: {
+      finds: {
+        take: 10,
+        maxTake: 50
+      }
+    }
+  }
 } )
 
 export default User

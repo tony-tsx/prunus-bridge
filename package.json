@@ -63,5 +63,8 @@
     "commander": "^6.2.1",
     "express": "^4.17.1",
     "typeorm": "^0.2.29"
+  },
+  "dependencies": {
+    "@cookiex/deep": "^0.0.2"
   }
 }

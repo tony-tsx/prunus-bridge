@@ -76,7 +76,12 @@ const usePagination = <
   const { entities, nextPage, loadingStatus, firstLoadingStatus, count, loadingCountStatus, errors }
     = state as usePagination.State<E, S, I>
 
-  const take = useMemo( () => options.take ?? 20, [ options.take ] )
+  const take = useMemo( () => {
+    const maxTake = bridge.config.handlerOptions?.defaults?.finds?.maxTake || Infinity
+    const defaultTake = bridge.config.handlerOptions?.defaults?.finds?.take
+    const take = options.take ?? defaultTake
+    return Math.min( maxTake, take )
+  }, [ options.take, bridge.config.handlerOptions ] )
   const skip = useMemo( () => take * nextPage, [ take, nextPage ] )
   const page = useMemo( () => nextPage ? nextPage - 1 : NaN, [ nextPage ] )
   const auto = useMemo( () => options.auto ?? true, [ options.auto ] )

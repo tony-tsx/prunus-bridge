@@ -14,8 +14,9 @@ app.use( TypeORMBridge.handler() )
 
 createConnection( require( '../../ormconfig.json' ) )
   .then( () => {
-    app.listen( 8080, () => {
+    const port = 8085 
+    app.listen( port, () => {
       console.log( `> dev server start at ${new Date().toLocaleString()}` )
-      console.log( '> dev server running in localhost:8080' )
+      console.log( `> dev server running in http://localhost:${port}` )
     } )
   } )

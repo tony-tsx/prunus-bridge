@@ -50,7 +50,7 @@ const _ = <
     // @ts-ignore
     ( ( ( req.bridge ??= {} ).methods ??= [] ) ).push( ...keys )
     try {
-      const method = req.query.method || def
+      const method = req.query.method ??= def
       if ( !method || !keys.includes( method ) ) next()
       else object[method]( bridge, req, res, next )
     } catch ( e ) { next( e ) }
