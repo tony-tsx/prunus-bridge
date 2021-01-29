@@ -1,9 +1,9 @@
 import deep from '@cookiex/deep'
 
-import BridgeStaticUpdate from '../../dist/types/bridge-static-update'
 import { AnyBridge } from '../types/bridge'
 import { AnyBridgeStaticMethods } from '../types/bridge-static'
 import BridgeStaticFind, { FindManyOptions } from '../types/bridge-static-find'
+import BridgeStaticUpdate from '../types/bridge-static-update'
 import { AnyTarget } from '../types/helpers'
 
 type AnyObject = { [key: string]: any }
