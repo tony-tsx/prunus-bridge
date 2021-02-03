@@ -1,5 +1,5 @@
 {
-  "name": "@cookiex/typeorm-bridge",
+  "name": "typeorm-bridge",
   "version": "0.1.2-473788b.0",
   "main": "dist/index.js",
   "repository": "https://github.com/dev-cookiex/typeorm-bridge.git",
