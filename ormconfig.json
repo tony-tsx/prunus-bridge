@@ -5,9 +5,9 @@
   "password": "root",
   "database": "platform",
   "synchronize": false,
-  "entities": [ "test/common/entities/**/*.ts" ],
+  "entities": [ "running/common/entities/**/*.ts" ],
   "cli": {
-    "entitiesDir": "test/common/entities"
+    "entitiesDir": "running/common/entities"
   },
   "logging": true,
   "logger": "file"
