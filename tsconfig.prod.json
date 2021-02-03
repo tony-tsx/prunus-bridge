@@ -18,7 +18,8 @@
   },
   "exclude": [
     "webpack.config.ts",
-    "test",
+    "running",
+    "tests",
     "webpack.d.ts",
     "webpack.js",
     "hooks.d.ts",
