@@ -1,0 +1,10 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "testMatch": [
+    "<rootDir>/tests/node/*.spec.ts"
+  ],
+  "setupFilesAfterEnv": [
+    "<rootDir>/tests/node.setup.spec.ts"
+  ]
+}
