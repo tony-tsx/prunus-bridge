@@ -54,6 +54,6 @@ type BridgeStatic<
     S extends { [key: string]: any } = {},
     I extends { [key: string]: any } = {}
   > =
-  IBridgeStatic<E, S, I> & I
+  IBridgeStatic<E, S, I> & S
 
 export default BridgeStatic
