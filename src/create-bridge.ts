@@ -90,7 +90,21 @@ const createBridge = <
     }
   } )
 
-  Object.getOwnPropertyNames( config.prototype ?? {} ).forEach( property => {
+  ;[
+    ...Object.getOwnPropertyNames( config.static ?? {} ),
+    ...Object.getOwnPropertySymbols( config.static ?? {} ),
+  ].forEach( property => {
+    Object.defineProperty(
+      bridge,
+      property,
+      Object.getOwnPropertyDescriptor( config.static, property ) ?? config.static[property as any]
+    )
+  } )
+
+  ;[
+    ...Object.getOwnPropertyNames( config.prototype ?? {} ),
+    ...Object.getOwnPropertySymbols( config.prototype ?? {} ),
+  ].forEach( property => {
     Object.defineProperty(
       bridge.prototype,
       property,
