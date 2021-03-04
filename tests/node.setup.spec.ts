@@ -1,14 +1,11 @@
-import { Connection, createConnection, getConnectionOptions } from 'typeorm'
-
-let connection: Connection
+import { createConnection, getConnectionOptions, getConnectionManager } from 'typeorm'
 
 beforeAll( async () => {
-  console.log( 'open connection' )
-  const options = await getConnectionOptions()
-  connection = await createConnection( options )
+  await createConnection(
+    await getConnectionOptions()
+  )
 } )
 
 afterAll( () => {
-  console.log( 'close connection' )
-  connection.close()
+  getConnectionManager().connections.forEach( connection => connection.close() )
 } )
