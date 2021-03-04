@@ -4,7 +4,6 @@ import supertest from 'supertest'
 import TypeORMBridge from '../../src'
 
 import '../../running/common/bridges/User'
-import { User } from '../../running/common/entities/User'
 
 describe( 'Server TDD', () => {
   const server: Express.Application = Express()
