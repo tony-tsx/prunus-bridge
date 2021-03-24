@@ -1,0 +1,24 @@
+{
+  "name": "@prunus/bridge-react-hooks",
+  "version": "0.0.0-0.1",
+  "description": "React tools for use bridge",
+  "main": "dist/index.js",
+  "author": "Tony <tony.js@zoho.eu>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "@cookiex/eslint-config": "^0.4.2",
+    "@prunus/bridge": "^0.0.0-0.2",
+    "@types/react": "^17.0.3",
+    "eslint": "^7.22.0",
+    "react": "^17.0.2"
+  },
+  "peerDependencies": {
+    "@prunus/bridge": "^0.0.0-0.2",
+    "@types/react": "^17.0.3",
+    "react": "^17.0.2"
+  }
+}
