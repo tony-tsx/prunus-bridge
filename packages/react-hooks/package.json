@@ -1,0 +1,22 @@
+{
+  "name": "@prunus/react-hooks",
+  "version": "0.0.0-0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "author": "Tony <tony.js@zoho.eu>",
+  "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "@cookiex/eslint-config": "^0.4.2",
+    "@prunus/bridge": "^0.0.0-0.2",
+    "@types/react": "^17.0.3",
+    "eslint": "^7.22.0",
+    "react": "^17.0.2"
+  },
+  "peerDependencies": {
+    "@types/react": "^17.0.3",
+    "react": "^17.0.2"
+  }
+}
