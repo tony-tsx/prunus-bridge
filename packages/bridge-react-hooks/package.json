@@ -1,6 +1,6 @@
 {
   "name": "@prunus/bridge-react-hooks",
-  "version": "0.0.0-0.1",
+  "version": "0.0.0-0.2",
   "description": "React tools for use bridge",
   "main": "dist/index.js",
   "author": "Tony <tony.js@zoho.eu>",
