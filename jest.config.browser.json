@@ -1,7 +1,0 @@
-{
-  "preset": "ts-jest",
-  "testEnvironment": "jsdom",
-  "testMatch": [
-    "<rootDir>/tests/browser/*.spec.ts"
-  ]
-}

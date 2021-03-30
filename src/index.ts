@@ -1,40 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import createBridge from './create-bridge'
-import { Configuration } from './create-handler'
-import { _require } from './helpers/_import'
-import Bridge from './types/bridge'
-import BridgeInstance from './types/bridge-instance'
-import { AnyTarget } from './types/helpers'
+import { factoryBridge } from './factories/bridge'
+import { factoryHandler } from './factories/handler'
+import { factorySeeder } from './factories/seeder'
+import * as BridgeHelpers from './helpers'
+import { Operators as BridgeOperators } from './tools/operators'
+import {
+  Bridge as BridgeTypings,
+  AnyBridge as TAnyBridge,
+  AnyBridgeInstance as TAnyBridgeInstance
+} from './typings/bridge'
+import { BridgeOptions } from './typings/bridge-options'
 
-type createRouter = typeof import( './handlers' )
-type createCommand = typeof import( './cli' )
-type createHandler = typeof import( './create-handler' )
-namespace TypeORMBridge {
-  export import Instance = BridgeInstance
-  export const create = createBridge
+namespace Bridge {
+  export type AnyBridge = TAnyBridge
+  export type AnyBridgeInstance = TAnyBridgeInstance
 
-  export const command = <
-    E extends AnyTarget,
-    S extends { [key: string]: any },
-    I extends { [key: string]: any }
-  >( bridge: Bridge<E, S, I> ) =>
-      new ( _require<createCommand>( './cli', __dirname ).default )( bridge as any )
+  export import Option = BridgeOptions
+  export import create = factoryBridge
+  export import handler = factoryHandler
+  export import seeder = factorySeeder
 
-  export const router = <
-    E extends AnyTarget,
-    S extends { [key: string]: any },
-    I extends { [key: string]: any }
-  >( bridge: Bridge<E, S, I> ) =>
-      _require<createRouter>( './handlers', __dirname ).default( bridge as any )
-
-  export const handler = ( config?: Configuration ) =>
-    _require<createHandler>( './create-handler', __dirname ).default( config )
+  export import Operators = BridgeOperators
+  export import Helpers = BridgeHelpers
+  export import Typings = BridgeTypings
 }
 
-type TypeORMBridge<
-  E extends AnyTarget,
-  S extends { [key: string]: any } = {},
-  I extends { [key: string]: any } = {}
-> = Bridge<E, S, I>
+type Bridge<E, S, P> = BridgeTypings<E, S, P>
 
-export = TypeORMBridge
+export = Bridge
+
+declare global {
+  export namespace Express {
+    export interface Request {
+      bridge: Bridge.AnyBridge
+      entity?: Bridge.AnyBridgeInstance | null | undefined
+    }
+  }
+}

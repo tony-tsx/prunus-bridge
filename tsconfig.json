@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ESNext",
     "module": "CommonJS",
     "lib": [ "ESNext", "DOM" ],
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "jsx": "react",
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": false,
     "skipLibCheck": true
-  }
+  },
+  "exclude": [ "./dist" ]
 }

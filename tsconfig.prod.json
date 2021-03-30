@@ -1,29 +1,9 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "ES2015",
-    "module": "CommonJS",
-    "lib": [ "ESNext", "DOM" ],
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "jsx": "react",
-    "declaration": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": false,
-    "rootDir": "src",
-    "outDir": "dist",
-    "skipLibCheck": true
+    "rootDir": "./src",
+    "outDir": "./dist",
   },
-  "exclude": [
-    "webpack.config.ts",
-    "running",
-    "tests",
-    "webpack.d.ts",
-    "webpack.js",
-    "hooks.d.ts",
-    "hooks.js",
-    "dist"
-  ]
+  "exclude": [ "./packages", "./dist" ]
 }

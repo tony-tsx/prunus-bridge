@@ -5,7 +5,8 @@
     "node": true
   },
   "globals": {
-    "NodeJS": true
+    "NodeJS": true,
+    "Prunus": true
   },
   "ignorePatterns": "/dist"
 }

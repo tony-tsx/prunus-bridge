@@ -1,6 +1,0 @@
-{
-  "projects": [
-    "./jest.config.browser.json",
-    "./jest.config.node.json"
-  ]
-}
