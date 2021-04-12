@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { factoryBridge } from './factories/bridge'
+import { factoryCommand } from './factories/command'
 import { factoryHandler } from './factories/handler'
 import { factorySeeder } from './factories/seeder'
 import * as BridgeHelpers from './helpers'
@@ -18,6 +19,7 @@ namespace Bridge {
   export import Option = BridgeOptions
   export import create = factoryBridge
   export import handler = factoryHandler
+  export import command = factoryCommand
   export import seeder = factorySeeder
 
   export import Operators = BridgeOperators
