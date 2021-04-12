@@ -1,3 +1,5 @@
+import { Connection } from 'typeorm'
+
 import { BRIDGE_IDENTIFY } from '../factories/bridge'
 import { records } from '../factories/bridge/records'
 import { AnyBridge, AnyBridgeInstance } from '../typings/bridge'
@@ -9,7 +11,7 @@ const getBridgeConnection = async <T extends AnyBridge | AnyBridgeInstance>( bri
   if ( !record ) return null
   if ( !useTypeormSystem() ) throw new Error( '' )
   const options = record.options
-  if ( options.getTypeORMConnection ) return await options.getTypeORMConnection()
+  if ( options.getTypeORMConnection ) return await options.getTypeORMConnection() as Connection
   const typeorm = await getTypeORM()
   return typeorm.getConnection( options.connection )
 }
