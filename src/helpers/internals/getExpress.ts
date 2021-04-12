@@ -1,8 +1,6 @@
-const key = 'express' as const
-type module = typeof import( 'express' )
+import { importer } from './prunus-bridge-importer'
 
-const getExpress = () => import( key ) as Promise<module>
-
-getExpress.sync = () => require( key ) as module
+// eslint-disable-next-line no-extra-parens
+const getExpress = importer<typeof import( 'express' )>( 'express' )
 
 export { getExpress }

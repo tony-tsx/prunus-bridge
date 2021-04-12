@@ -1,3 +1,6 @@
 export * from './getExpress'
 export * from './getStandardBridgeRoute'
 export * from './getTypeORM'
+export * from './getCommander'
+export * from './getInquirer'
+export * from './getMainCommand'
