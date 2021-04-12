@@ -2,7 +2,7 @@ import { DeleteResult, FindConditions, FindManyOptions, FindOneOptions, InsertRe
 import TypeORM from 'typeorm'
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 
-import { BRIDGE_IDENTIFY } from '../factories/bridge'
+import { BRIDGE_IDENTIFY, BRIDGE_STATIC } from '../factories/bridge'
 import { Operators } from '../tools/operators'
 
 type Bridge<E, S, P> = Bridge.StaticBind<E, S, P> & Bridge.Constructor<E, S, P>
@@ -146,12 +146,17 @@ namespace Bridge {
     export interface Identifier {
       [BRIDGE_IDENTIFY]: keyof any
     }
+
+    export interface StaticBridgePointer<E, S, P> {
+      [BRIDGE_STATIC]: Bridge<E, S, P>
+    }
   }
   export type Instance<E, S, P> =
     & Instance.Methods<E, S, P>
     & Instance.Data<E>
     & Instance.PrototypeBind<E, S, P>
     & Instance.Identifier
+    & Instance.StaticBridgePointer<E, S, P>
 }
 
 declare global {
