@@ -9,6 +9,7 @@ import { statics } from './statics'
 const SERVER_PROPERTY = Symbol( 'server-property' )
 const CLIENT_PROPERTY = Symbol( 'client-property' )
 const BRIDGE_IDENTIFY = Symbol( 'bridge-identify' )
+const BRIDGE_STATIC = Symbol( 'bridge-static' )
 
 const constructor = ( name: string ) => `
   ( function() {
@@ -28,6 +29,12 @@ const constructor = ( name: string ) => `
         self,
         BRIDGE_IDENTIFY,
         Object.getOwnPropertyDescriptor( bridge, BRIDGE_IDENTIFY )
+      )
+
+      Object.defineProperty(
+        self,
+        BRIDGE_STATIC,
+        bridge
       )
 
       return self
@@ -52,12 +59,7 @@ const factoryBridge = <E, S = {}, P = {}>(
   // eslint-disable-next-line no-eval
   const bridge = eval( constructor( options.name ) ) as AnyBridge
 
-  Object.defineProperty( bridge, 'op', {
-    value: Operators,
-    enumerable: true,
-    writable: false,
-    configurable: false
-  } ) 
+  Object.defineProperty( bridge, 'op', { value: Operators, enumerable: false, writable: false, configurable: false } )
 
   Object.defineProperty( bridge, BRIDGE_IDENTIFY, {
     value: records.register( { bridge, options }, options.identifier ),
@@ -86,4 +88,4 @@ declare namespace factoryBridge {
   export interface Options<E, S, P> extends BridgeOptions<E, S, P> {}
 }
 
-export { factoryBridge, BRIDGE_IDENTIFY, CLIENT_PROPERTY, SERVER_PROPERTY }
+export { factoryBridge, BRIDGE_IDENTIFY, CLIENT_PROPERTY, SERVER_PROPERTY, BRIDGE_STATIC }
