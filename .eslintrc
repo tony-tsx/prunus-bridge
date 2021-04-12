@@ -1,5 +1,5 @@
 {
-  "extends": "@cookiex",
+  "extends": "@prunus",
   "env": {
     "browser": true,
     "node": true
