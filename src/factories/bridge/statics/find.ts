@@ -21,7 +21,6 @@ const find: Bridge.Static.Find<any, Any, Any> = {
     } )
   },
   async findAndCount( optionsOrConditions: FindManyOptions<Any> | FindConditions<Any> ) {
-    console.log( optionsOrConditions )
     return useTypeormSystemDelegate( this, {
       system: async repository => {
         const [ entities, count ] = await repository.findAndCount( optionsOrConditions )
@@ -60,8 +59,11 @@ const find: Bridge.Static.Find<any, Any, Any> = {
       },
       client: async axios => {
         const uri = createBridgeMethodRequestUri( this, 'findOne' )
-        const { data: entity } = await axios.get( uri, { params: { idOrOptionsOrConditions, options } } )
-        if ( !entity ) return entity
+        const { data: entity } = await axios.get( uri, {
+          params: { idOrOptionsOrConditions, options },
+          validateStatus: status => status < 300 || status === 404
+        } )
+        if ( !entity ) return null
         return this( entity )
       },
     } )

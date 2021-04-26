@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import { FindConditions, FindManyOptions } from 'typeorm'
+import { getBridgeEntitySchemas as schemas } from '../../helpers/getBridgeEntitySchemas'
 
 import { parseQueryRecursive as parse } from '../../helpers/parseQueryRecursive'
 
@@ -15,17 +16,31 @@ const clear: RequestHandler = ( req, res, next ) => {
 }
 
 const count: RequestHandler<unknown, unknown, unknown, CountQuery> = ( req, res, next ) => {
-  req.bridge.count( parse( req.query ) )
+  schemas.findManyConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( parse( req.query ) ) )
+    .then( options => req.bridge.count( options ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
 const increment: RequestHandler<unknown, unknown, unknown, IncrementQuery> = ( req, res, next ) => {
-  req.bridge.increment( parse( req.query.conditions ), parse( req.query.propertyPath ), parse( req.query.value ) )
+  schemas.findConditions( req.bridge )
+    .then( schema => schema.validate( parse( req.query.conditions ) ) )
+    .then( conditions => req.bridge.decrement(
+      conditions as FindConditions<any>,
+      parse( req.query.propertyPath ),
+      parse( req.query.value )
+    ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
 const decrement: RequestHandler<unknown, unknown, unknown, DecrementQuery> = ( req, res, next ) => {
-  req.bridge.increment( parse( req.query.conditions ), parse( req.query.propertyPath ), parse( req.query.value ) )
+  schemas.findConditions( req.bridge )
+    .then( schema => schema.validate( parse( req.query.conditions ) ) )
+    .then( conditions => req.bridge.increment(
+      conditions as FindConditions<any>,
+      parse( req.query.propertyPath ),
+      parse( req.query.value )
+    ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }

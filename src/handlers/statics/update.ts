@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
+import { getBridgeEntitySchemas as schemas } from '../../helpers/getBridgeEntitySchemas'
 
 import { Bridge } from '../../typings/bridge'
 
@@ -9,13 +10,19 @@ type UpdateQuery = Bridge.Helpers.Criteria<Any>
 type SoftUpdateQuery = UpdateQuery
 
 const update: RequestHandler<unknown, unknown, UpdateBody, UpdateQuery> = ( req, res, next ) => {
-  req.bridge.update( req.query, req.body )
+  Promise.all( [ schemas.criteria( req.bridge ), schemas.update( req.bridge ) ] )
+    .then( ( [ criteriaSchema, updateSchema ] ) => Promise.all( [
+      criteriaSchema.validate( req.query ),
+      updateSchema.validate( req.body )
+    ] ) )
+    .then( ( [ criteria, update ] ) => req.bridge.update( criteria, update as any ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
 
 const restore: RequestHandler<unknown, unknown, unknown, SoftUpdateQuery> = ( req, res, next ) => {
-  req.bridge.restore( req.query )
+  schemas.criteria( req.bridge )
+    .then( schema => schema.validate( req.query ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }

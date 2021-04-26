@@ -1,0 +1,113 @@
+FORMAT: 1A
+HOST: <your-path-uri>
+
+# @prunus/bridge
+
+This document contains all the api endpoints that @ prunus/bridge offers.
+::: warning
+#### <i class="fa fa-warning"></i> Caution
+This is a library in development. Any problem or suggestion related to api rest that @ prunus/bridge offers feel free to open an issue.
+:::
+
+::: note
+Remember that <your-path-uri> is where you instantiate Bridge.handler in your code on the express path.
+
+Example:
+
+``` ts
+// user.bridge.ts
+const UserBridge = Bridge.create( {
+   name: 'User',
+   uri: 'users',
+   getTypeORMEntity: () => import ( './User.entity' ).then( module => module.User )
+} )
+```
+
+```ts
+// server.ts
+const app = Express()
+
+// This will generate /users in your application with all the methods listed in this document.
+app.use( Bridge.handler( UserBridge ) )
+
+app.listen( 8080 )
+``` 
+
+:::
+
+## Retrive Entities [/{?cache,join,loadEagerRelations,loadRelationIds,lock,order,relations,select,skip,take,transaction,where,withDeleted}]
+
+list all records within the bridging entity, these records can be filtered as desired according to the where rule of the typeorm find.
+
+### List [GET]
+
++ Parameters
+    
+    + cache: true (boolean|number|object, optional)
+    + join: {} (object, optional)
+    + loadEagerRelations: true (boolean, optional)
+    + loadRelationIds: true (boolean|object, optional)
+    + lock: true (object, optional)
+    + order: {} (object, optional)
+    + relations: [] (array, optional)
+    + select: [] (array, optional)
+    + skip: 100 (number, optional)
+    + take: 100 (number, optional)
+    + transaction: false (boolean, optional)
+    + where: {} (object, optional)
+    + withDeleted: false (boolean, optional)
+
++ Response 200 (application/json)
+    
+    + Attributes (array[Bridge])
+
+## Insert, Update and Delete [/]
+
+### Insert [POST]
+
++ Response 201 (application/json)
+
+    + Attributes (InsertResult)
+
+### Delete [DELETE]
+
++ Request (application/json)
+
+    + Attributes (Bridge)
+
++ Response 200 (application/json)
+
+    + Attributes (DeleteResult)
+
+### Update [PATCH]
+
++ Request (application/json)
+
+    + Attributes (Bridge)
+
++ Response 200 (application/json)
+
+    + Attributes (UpdateResult)
+
+## Data Structures
+
+### VoidObject
+
+### Bridge ( VoidObject )
+
+### JoinOptions
++ alias: alias of the main entity (string)
+
+### DeleteResult
++ raw (array) - Raw SQL result returned by executed query.
++ affected (number) - Number of affected rows/documents
+
+### InsertResult
++ identifiers (array[VoidObject]) - Contains inserted entity id.
++ generatedMaps (array[VoidObject]) - Generated values returned by a database.
++ raw (array) - Raw SQL result returned by executed query.
+
+### UpdateResult
++ raw (array) - Raw SQL result returned by executed query.
++ affected (number) - Number of affected rows/documents
++ generatedMaps (array[VoidObject]) - Generated values returned by a database.

@@ -10,7 +10,15 @@ const createStandardEntityColumnTypeSchema = ( column: ColumnMetadata ): Yup.Bas
     case Date:
     case 'date':
     case 'datetime':
-    case 'timestamp': return Yup.date()
+    case 'time':
+    case 'timetz':
+    case 'time with time zone':
+    case 'time without time zone':
+    case 'timestamp':
+    case 'timestamptz':
+    case 'timestamp with time zone':
+    case 'timestamp without time zone':
+      return Yup.date()
     case 'uuid': return Yup.string()
       .matches( /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i )
     case 'character':
@@ -55,4 +63,4 @@ const createStandardBridgeEntitySchema = async <T extends AnyBridge>( bridge: T 
   return Yup.object().shape( shape )
 }
 
-export { createStandardBridgeEntitySchema }
+export { createStandardBridgeEntitySchema, createStandardEntityColumnTypeSchema }

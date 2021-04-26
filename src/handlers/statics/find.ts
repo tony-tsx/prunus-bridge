@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import { NotFound } from 'http-errors'
 import { FindConditions, FindManyOptions, FindOneOptions, ObjectID } from 'typeorm'
 import { FindOptionsUtils } from 'typeorm/find-options/FindOptionsUtils'
+import { getBridgeEntitySchemas as schemas } from '../../helpers/getBridgeEntitySchemas'
 
 import { getDefaultRouteOptions as option } from '../../helpers/getDefaultRouteOptions'
 import { parseQueryRecursive as parse } from '../../helpers/parseQueryRecursive'
@@ -24,7 +25,9 @@ const find: RequestHandler<unknown, unknown, unknown, FindQuery> = ( req, res, n
   const defaultOptions = option( req.bridge, 'find' )
   const receiveOptions = parse( req.query )
   const options = union( defaultOptions, receiveOptions ) as FindManyOptions
-  req.bridge.find( options )
+  schemas.findManyConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( options ) )
+    .then( options => req.bridge.find( options ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
@@ -33,8 +36,9 @@ const findAndCount: RequestHandler<unknown, unknown, unknown, FindAndCountQuery>
   const defaultOptions = option( req.bridge, 'findAndCount' )
   const receiveOptions = parse( req.query )
   const options = union( defaultOptions, receiveOptions ) as FindManyOptions
-  console.log( options )
-  req.bridge.findAndCount( options )
+  schemas.findManyConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( options ) )
+    .then( options => req.bridge.findAndCount( options ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
@@ -44,7 +48,9 @@ const findByIds: RequestHandler<unknown, unknown, unknown, FindByIdsQuery> = ( r
   const ids = req.query?.ids ?? []
   const receiveOptions = parse( req.query.optionsOrConditions )
   const options = union( defaultOptions, receiveOptions ) as FindManyOptions
-  req.bridge.findByIds( ids, options )
+  schemas.findManyConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( options ) )
+    .then( options => req.bridge.findByIds( ids, options ) )
     .then( res.json.bind( res ) )
     .catch( next )
 }
@@ -58,10 +64,12 @@ const findOne: RequestHandler<unknown, unknown, unknown, FindOneQuery> = ( req, 
       ? union( defaultOptions, receiveOptions1 )
       : union( defaultOptions, receiveOptions2 )
 
-  ;( !FindOptionsUtils.isFindOneOptions( receiveOptions1 )
-    ? req.bridge.findOne( receiveOptions1 as any, options )
-    : req.bridge.findOne( options )
-  )
+  schemas.findOneConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( options ) )
+    .then( options => !FindOptionsUtils.isFindOneOptions( receiveOptions1 )
+      ? req.bridge.findOne( receiveOptions1 as any, options )
+      : req.bridge.findOne( options )
+    )
     .then( single => single ? single : Promise.reject( new NotFound( `${req.bridge.name} not found` ) ) )
     .then( res.json.bind( res ) )
     .catch( next )
@@ -76,10 +84,12 @@ const findOneOrFail: RequestHandler<unknown, unknown, unknown, FindOneOrFailQuer
       ? union( defaultOptions, receiveOptions1 )
       : union( defaultOptions, receiveOptions2 )
 
-  ;( !FindOptionsUtils.isFindOneOptions( receiveOptions1 )
-    ? req.bridge.findOneOrFail( receiveOptions1 as any, options )
-    : req.bridge.findOneOrFail( options )
-  )
+  schemas.findOneConditionsOrOptions( req.bridge )
+    .then( schema => schema.validate( options ) )
+    .then( options => !FindOptionsUtils.isFindOneOptions( receiveOptions1 )
+      ? req.bridge.findOne( receiveOptions1 as any, options )
+      : req.bridge.findOne( options )
+    )
     .then( single => single ? single : Promise.reject( new NotFound( `${req.bridge.name} not found` ) ) )
     .then( res.json.bind( res ) )
     .catch( next )

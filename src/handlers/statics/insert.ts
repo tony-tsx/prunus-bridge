@@ -3,6 +3,7 @@ import { FindManyOptions, FindOneOptions } from 'typeorm'
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 
 import { getBridgeEntitySchema } from '../../helpers/getBridgeEntitySchema'
+import { getBridgeEntitySchemas as schemas } from '../../helpers/getBridgeEntitySchemas'
 
 type Any = { [key: string]: any }
 type InsertBody = QueryDeepPartialEntity<Any> | QueryDeepPartialEntity<Any>[]
@@ -13,7 +14,7 @@ type InsertAndFindQuery = FindManyOptions<Any>
 type InsertOneAndFindQuery = FindOneOptions<Any>
 
 const insert: RequestHandler<unknown, unknown, InsertBody, null> = async ( req, res, next ) => {
-  getBridgeEntitySchema( req.bridge )
+  schemas.insert( req.bridge )
     .then( schema => schema.validate( req.body ) )
     .then( () => req.bridge.insert( req.body ) )
     .then( res.json.bind( res ) )
@@ -21,7 +22,7 @@ const insert: RequestHandler<unknown, unknown, InsertBody, null> = async ( req, 
 }
 
 const insertOne: RequestHandler<unknown, unknown, InsertOneBody, null> = ( req, res, next ) => {
-  getBridgeEntitySchema( req.bridge )
+  schemas.insertOne( req.bridge )
     .then( schema => schema.validate( req.body ) )
     .then( () => req.bridge.insertOne( req.body ) )
     .then( res.json.bind( res ) )
@@ -29,7 +30,7 @@ const insertOne: RequestHandler<unknown, unknown, InsertOneBody, null> = ( req, 
 }
 
 const insertAndFind: RequestHandler<unknown, unknown, InsertAndFindBody, InsertAndFindQuery> = ( req, res, next ) => {
-  getBridgeEntitySchema( req.bridge )
+  schemas.insert( req.bridge )
     .then( schema => schema.validate( req.body ) )
     .then( () => req.bridge.insertAndFind( req.body ) )
     .then( res.json.bind( res ) )
@@ -39,7 +40,7 @@ const insertAndFind: RequestHandler<unknown, unknown, InsertAndFindBody, InsertA
 const insertOneAndFind: RequestHandler<
   unknown, unknown, InsertOneAndFindBody, InsertOneAndFindQuery
 > = ( req, res, next ) => {
-  getBridgeEntitySchema( req.bridge )
+  schemas.insertOne( req.bridge )
     .then( schema => schema.validate( req.body ) )
     .then( () => req.bridge.insertOneAndFind( req.body ) )
     .then( res.json.bind( res ) )

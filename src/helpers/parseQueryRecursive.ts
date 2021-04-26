@@ -2,15 +2,16 @@ import { Operators } from '../tools/operators'
 
 const numberRegExp = /^[0-9]+(\.[0-9]+)?$/
 
-const parseQueryRecursive = <T>( object: T ): T => {
-  console.log( object )
+const parseQueryRecursive = <T>( object: T, fromJSON = false ): T => {
   if ( typeof object !== 'object' || object === null ) return object
   if ( Array.isArray( object ) ) {
     return object.map( value => {
-      console.log( { value } )
       if ( typeof value === 'string' )
         if ( Operators.tools.isClientOperator( value ) )
           return Operators.tools.parseClientOperator( value )
+
+        else if ( fromJSON )
+          return value
   
         else if ( numberRegExp.test( value ) )
           return Number( value )
@@ -20,11 +21,15 @@ const parseQueryRecursive = <T>( object: T ): T => {
   
         else if ( value === 'false' )
           return false
-  
-        else return value
+
+        else try {
+          return parseQueryRecursive( JSON.parse( value ), true )
+        } catch {
+          return value
+        }
   
       else if ( typeof value === 'object' )
-        return parseQueryRecursive( value )
+        return parseQueryRecursive( value, fromJSON )
   
       return value
     } ) as any as T
@@ -33,6 +38,9 @@ const parseQueryRecursive = <T>( object: T ): T => {
     if ( typeof value === 'string' )
       if ( Operators.tools.isClientOperator( value ) )
         return { ...object, [key]: Operators.tools.parseClientOperator( value ) }
+
+      else if ( fromJSON )
+        return { ...object, [key]: value }
 
       else if ( numberRegExp.test( value ) )
         return { ...object, [key]: Number( value ) }
@@ -43,10 +51,14 @@ const parseQueryRecursive = <T>( object: T ): T => {
       else if ( value === 'false' )
         return { ...object, [key]: false }
 
-      else return { ...object, [key]: value }
+      else try {
+        return { ...object, [key]: parseQueryRecursive( JSON.parse( value ), true ) }
+      } catch {
+        return { ...object, [key]: value }
+      }
 
     if ( typeof value === 'object' )
-      return { ...object, [key]: parseQueryRecursive( value ) }
+      return { ...object, [key]: parseQueryRecursive( value, fromJSON ) }
 
     return { ...object, [key]: value }
   }, {} ) as T
