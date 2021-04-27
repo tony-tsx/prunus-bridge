@@ -1,6 +1,5 @@
 import { AxiosInstance } from 'axios'
 import { RequestHandler } from 'express'
-import { PathParams } from 'express-serve-static-core'
 import { Connection, FindManyOptions, FindOneOptions, RemoveOptions, SaveOptions } from 'typeorm'
 import { ObjectSchema } from 'yup'
 import { MixedSchema } from 'yup/lib/mixed'
@@ -75,10 +74,7 @@ interface BridgeOptions<E, S, P> extends Prunus.GlobalBridgeOptions<E, S, P> {
   getAxiosInstance?: () => AxiosInstance | Promise<AxiosInstance>
   getTypeORMConnection?: () => Connection | Promise<Connection> | any
   deleteToSoft?: boolean
-  uri?: string | {
-    request: string
-    handler: PathParams
-  }
+  uri?: string
   connection?: string
   identifier?: keyof any
   prototype?: BridgeOptions.DelegateThis<P, Bridge.Instance<E, S, P>>

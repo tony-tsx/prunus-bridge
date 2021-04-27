@@ -1,6 +1,5 @@
 
 import { bridgeAttach } from '../../handlers/helpers'
-import { getBridgeHandlerPath } from '../../helpers/getBridgeHandlerPath'
 import { getBridgeHandlers } from '../../helpers/getBridgeHandlers'
 import { getExpress } from '../../helpers/internals/getExpress'
 import { getStandardBridgeRoute } from '../../helpers/internals/getStandardBridgeRoute'
@@ -9,10 +8,9 @@ import { factoryAllBridgeHandler } from './all'
 
 const factoryHandler = <T extends AnyBridge>( bridge: T ) => {
   const handler = getExpress.sync().Router()
-  const path = getBridgeHandlerPath( bridge )
-  handler.use( path, bridgeAttach( bridge ) )
-  handler.use( path, getBridgeHandlers( bridge ) )
-  handler.use( path, getStandardBridgeRoute() )
+  handler.use( bridgeAttach( bridge ) )
+  handler.use( getBridgeHandlers( bridge ) )
+  handler.use( getStandardBridgeRoute() )
   return handler
 }
 
