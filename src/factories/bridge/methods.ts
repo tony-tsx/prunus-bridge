@@ -8,7 +8,7 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
   async save( options ) {
     return useTypeormSystemDelegate( this, {
       system: async repository => {
-        const entity = await repository.save( this, options )
+        const entity = await repository.save( repository.create( this ), options )
         return Object.assign( this, entity )
       },
       client: async axios => {
@@ -21,7 +21,7 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
   async recover( options ) {
     return useTypeormSystemDelegate( this, {
       system: async repository => {
-        const entity = await repository.recover( this, options )
+        const entity = await repository.recover( repository.create( this ), options )
         return Object.assign( this, entity )
       },
       client: async axios => {
@@ -34,7 +34,7 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
   async remove( options ) {
     return useTypeormSystemDelegate( this, {
       system: async repository => {
-        const entity = await repository.remove( this, options )
+        const entity = await repository.remove( repository.create( this ), options )
         return Object.assign( this, entity )
       },
       client: async axios => {
@@ -48,7 +48,7 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
     return useTypeormSystemDelegate( this, {
       system: async repository => {
         console.log( 'system softRemove options', options )
-        const entity = await repository.softRemove( this, options )
+        const entity = await repository.softRemove( repository.create( this ), options )
         console.log( 'system softRemove result', entity )
         return Object.assign( this, entity )
       },
