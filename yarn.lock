@@ -8615,10 +8615,10 @@ tapable@^2.1.1, tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.0.tgz#5c373d281d9c672848213d0e037d1c4165ab426b"
   integrity sha512-FBk4IesMV1rBxX2tfiK8RAmogtWn53puLOQlvO8XuwlgxcYbP4mVPS9Ph4aeamSyyVjOl24aYWAuc8U5kCVwMw==
 
-te2ys@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/te2ys/-/te2ys-0.0.1.tgz#b850b40b7ee963991d0d0f1d3d4f80ca13a74459"
-  integrity sha512-4fyXeiadbqwsyLScrvSAySdiv8mK0O8D6nhNe51PxSxnf9kn2Zj+xFSkbhmRw9c4AbtJAWS0Jp0dX0qol4OQ2w==
+te2ys@latest:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/te2ys/-/te2ys-0.0.2.tgz#93ab009622d163b7b25e6d22647c6a93f2935c66"
+  integrity sha512-a2+R/hH6aupre5dMehcFPHJI4Gjq7weLFqX9SgzS206hV93hST4h3W1nXQuSnE1Ofxa21GEElpxIlTTWahBFYw==
 
 terminal-link@^2.0.0:
   version "2.1.1"
