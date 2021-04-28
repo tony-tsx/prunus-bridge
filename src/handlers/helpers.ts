@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { RequestHandler, Request } from 'express'
 import { NotFound } from 'http-errors'
 
 import { AnyBridge } from '../typings/bridge'
@@ -10,12 +10,13 @@ const bridgeAttach = <T extends AnyBridge>( bridge: T ): RequestHandler => {
   }
 }
 
-const bridgeInstanceAttach = ( param: string ): RequestHandler => {
+const bridgeInstanceAttach = ( getParameterIdentifier: string | ( ( req: Request ) => any ) ): RequestHandler => {
   return ( req, res, next ) => {
-    req.bridge.findOne( req.params[param] )
+    const identifier = typeof getParameterIdentifier === 'function' ? getParameterIdentifier( req ) : req.params[getParameterIdentifier]
+    req.bridge.findOne( identifier )
       .then( instance => {
         if ( !instance )
-          next( new NotFound( `${req.bridge.name} not found with ${param} ${req.params[param]}` ) )
+          next( new NotFound( `${req.bridge.name} not found with ${getParameterIdentifier} ${identifier}` ) )
         req.entity = instance
         next()
       } )

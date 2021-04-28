@@ -1,4 +1,5 @@
-
+import { Request } from 'express'
+import { handler } from '../..'
 import { bridgeAttach } from '../../handlers/helpers'
 import { getBridgeHandlers } from '../../helpers/getBridgeHandlers'
 import { getExpress } from '../../helpers/internals/getExpress'
@@ -15,6 +16,17 @@ const factoryHandler = <T extends AnyBridge>( bridge: T ) => {
 }
 
 factoryHandler.all = factoryAllBridgeHandler
+
+factoryHandler.match = ( parameterKey: string | ( ( req: Request ) => any ) ) => {
+  return getStandardBridgeRoute.match( parameterKey )
+}
+
+factoryHandler.matchWithoutGeneral = <T extends AnyBridge>( parameterKey: string | ( ( req: Request ) => any ), bridge: T ) => {
+  const handler = getExpress.sync().Router()
+  handler.use( bridgeAttach( bridge ) )
+  handler.use( getStandardBridgeRoute.match( parameterKey ) )
+  return handler
+}
 
 declare namespace factoryHandler {}
 

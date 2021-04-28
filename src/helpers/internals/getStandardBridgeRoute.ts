@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request } from 'express'
 
 import { statics, methods, identifier } from '../../handlers'
 import { bridgeInstanceAttach } from '../../handlers/helpers'
@@ -11,7 +11,6 @@ let _standardRoute: Router | null = null
 const getStandardBridgeRoute = () => {
   if ( _standardRoute ) return _standardRoute
   const router = getExpress.sync().Router()
-  const key = 'identifier'
 
   router.get( paths( statics.find.name, '/' ), handler( statics.find ) )
   router.get( paths( statics.findAndCount.name, 'findCount' ), handler( statics.findAndCount ) )
@@ -40,15 +39,21 @@ const getStandardBridgeRoute = () => {
   router.patch( paths( statics.increment.name ), handler( statics.increment ) )
   router.patch( paths( statics.decrement.name ), handler( statics.decrement ) )
 
-  router.use( `/:${key}`, bridgeInstanceAttach( key ) )
-
-  router.get( paths( `/:${key}`, `/:${key}/find` ), identifier.find )
-  router.patch( paths( `/:${key}`, `/:${key}/update` ), identifier.update )
-  router.delete( paths( `/:${key}`, `/:${key}/remove` ), identifier.remove )
-
-  router.delete( paths( `/:${key}/softRemove`, `/:${key}/soft` ), identifier.softRemove )
-
   return _standardRoute = router
+}
+
+getStandardBridgeRoute.match = ( key: string | ( ( req: Request ) => any ) ) => {
+  const router = getExpress.sync().Router()
+
+  router.use( bridgeInstanceAttach( key ) )
+
+  router.get( paths( `/`, 'find' ), identifier.find )
+  router.patch( paths( `/`, 'update' ), identifier.update )
+  router.delete( paths( '/', 'remove' ), identifier.remove )
+
+  router.delete( paths( 'softRemove', 'soft' ), identifier.softRemove )
+
+  return router
 }
 
 export { getStandardBridgeRoute }
