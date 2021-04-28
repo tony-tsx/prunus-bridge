@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express'
 import { NotFound } from 'http-errors'
 import { FindConditions, FindManyOptions, FindOneOptions, ObjectID } from 'typeorm'
-import { FindOptionsUtils } from 'typeorm/find-options/FindOptionsUtils'
 import { getBridgeEntitySchemas as schemas } from '../../helpers/getBridgeEntitySchemas'
 
 import { getDefaultRouteOptions as option } from '../../helpers/getDefaultRouteOptions'
+import { getTypeORMFindOptionsUtils } from '../../helpers/internals/getTypeORMFindOptionsUtils'
 import { parseQueryRecursive as parse } from '../../helpers/parseQueryRecursive'
 import { processUnionOptions as union } from '../../helpers/processUnionOptions'
 
@@ -56,6 +56,7 @@ const findByIds: RequestHandler<unknown, unknown, unknown, FindByIdsQuery> = ( r
 }
 
 const findOne: RequestHandler<unknown, unknown, unknown, FindOneQuery> = ( req, res, next ) => {
+  const { FindOptionsUtils } = getTypeORMFindOptionsUtils.sync()
   const defaultOptions = option( req.bridge, 'findOne' )
   const receiveOptions1 = parse( req.query.idOrOptionsOrConditions )
   const receiveOptions2 = parse( req.query.options )
@@ -76,6 +77,7 @@ const findOne: RequestHandler<unknown, unknown, unknown, FindOneQuery> = ( req, 
 }
 
 const findOneOrFail: RequestHandler<unknown, unknown, unknown, FindOneOrFailQuery> = ( req, res, next ) => {
+  const { FindOptionsUtils } = getTypeORMFindOptionsUtils.sync()
   const defaultOptions = option( req.bridge, 'findOneOrFail' )
   const receiveOptions1 = parse( req.query.idOrOptionsOrConditions )
   const receiveOptions2 = parse( req.query.options )

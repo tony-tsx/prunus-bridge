@@ -1,7 +1,7 @@
 import { create } from '@cookiex/deep'
 
 import { FindConditions, FindOneOptions, FindManyOptions } from 'typeorm'
-import { FindOptionsUtils } from 'typeorm/find-options/FindOptionsUtils'
+import { getTypeORMFindOptionsUtils } from './internals/getTypeORMFindOptionsUtils'
 
 const deep = create( {
   ignoreConflictType: true,
@@ -20,6 +20,7 @@ interface processUnionOptions {
 }
 
 const processUnionOptions: processUnionOptions = ( a: any = {}, b: any = {} ) => {
+  const { FindOptionsUtils } = getTypeORMFindOptionsUtils.sync()
   if ( FindOptionsUtils.isFindOneOptions( a ) )
     if ( FindOptionsUtils.isFindOneOptions( b ) )
       return deep( a, b )
