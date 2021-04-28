@@ -17,11 +17,11 @@ const factoryHandler = <T extends AnyBridge>( bridge: T ) => {
 
 factoryHandler.all = factoryAllBridgeHandler
 
-factoryHandler.match = ( parameterKey: string | ( ( req: Request ) => any ) ) => {
+factoryHandler.matchWithChain = ( parameterKey: string | ( ( req: Request ) => any ) ) => {
   return getStandardBridgeRoute.match( parameterKey )
 }
 
-factoryHandler.matchWithoutGeneral = <T extends AnyBridge>( parameterKey: string | ( ( req: Request ) => any ), bridge: T ) => {
+factoryHandler.match = <T extends AnyBridge>( parameterKey: string | ( ( req: Request ) => any ), bridge: T ) => {
   const handler = getExpress.sync().Router()
   handler.use( bridgeAttach( bridge ) )
   handler.use( getStandardBridgeRoute.match( parameterKey ) )
