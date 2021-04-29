@@ -11,8 +11,10 @@ const CLIENT_PROPERTY = Symbol( 'client-property' )
 const BRIDGE_IDENTIFY = Symbol( 'bridge-identify' )
 const BRIDGE_STATIC = Symbol( 'bridge-static' )
 
-const factoryBridge = ( function <E, S = {}, P = {}>(
-  this: { [key: string]: AnyBridge },
+interface BridgeLib { [key: string]: AnyBridge }
+
+let factoryBridge = function <E, S = {}, P = {}>(
+  this: BridgeLib,
   options: factoryBridge.Options<E, S, P>
 ): Bridge<E, S, P> {
   let Target: new () => E
@@ -22,7 +24,6 @@ const factoryBridge = ( function <E, S = {}, P = {}>(
     if ( TypeORMEntity instanceof Promise )
       TypeORMEntity.then( typeormEntityTarget => Target = typeormEntityTarget )
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     else Target = TypeORMEntity
   }
 
@@ -68,7 +69,9 @@ const factoryBridge = ( function <E, S = {}, P = {}>(
   delete this[options.name]
 
   return Bridge as Bridge<E, S, P>
-} ).bind( {} )
+}
+
+factoryBridge = factoryBridge.bind( {} )
 
 declare namespace factoryBridge {
   export interface TwoCombineSides {
