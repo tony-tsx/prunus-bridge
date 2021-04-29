@@ -11,74 +11,64 @@ const CLIENT_PROPERTY = Symbol( 'client-property' )
 const BRIDGE_IDENTIFY = Symbol( 'bridge-identify' )
 const BRIDGE_STATIC = Symbol( 'bridge-static' )
 
-const constructor = ( name: string ) => `
-  ( function() {
-    return function ${name}( entity ) {
-      if ( !( this instanceof bridge ) )
-        if ( Array.isArray( entity ) )
-          return entity.map( bridge )
-        else return new bridge( entity )
-
-      const self = EntityTarget ? Object.assign( new EntityTarget(), this ) : this
-
-      Object.assign( self, entity )
-
-      Object.defineProperties( self, Object.getOwnPropertyDescriptors( bridge.prototype ) )
-
-      Object.defineProperty(
-        self,
-        BRIDGE_IDENTIFY,
-        Object.getOwnPropertyDescriptor( bridge, BRIDGE_IDENTIFY )
-      )
-
-      Object.defineProperty(
-        self,
-        BRIDGE_STATIC,
-        bridge
-      )
-
-      return self
-    }
-  } )()
-`
-
-const factoryBridge = <E, S = {}, P = {}>(
+const factoryBridge = ( function <E, S = {}, P = {}>(
+  this: { [key: string]: AnyBridge },
   options: factoryBridge.Options<E, S, P>
-): Bridge<E, S, P> => {
-  let EntityTarget: new () => E
+): Bridge<E, S, P> {
+  let Target: new () => E
 
   if ( useTypeormSystem() ) {
     const TypeORMEntity = options.getTypeORMEntity()
     if ( TypeORMEntity instanceof Promise )
-      TypeORMEntity.then( typeormEntityTarget => EntityTarget = typeormEntityTarget )
+      TypeORMEntity.then( typeormEntityTarget => Target = typeormEntityTarget )
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    else EntityTarget = TypeORMEntity
+    else Target = TypeORMEntity
   }
 
-  // eslint-disable-next-line no-eval
-  const bridge = eval( constructor( options.name ) ) as AnyBridge
+  this[options.name] = ( function( entity: any ) {
+    if ( !( this instanceof Bridge ) )
+      if ( Array.isArray( entity ) )
+        return entity.map( Bridge )
+      else return new Bridge( entity )
 
-  Object.defineProperty( bridge, 'op', { value: Operators, enumerable: false, writable: false, configurable: false } )
+    const self = Target ? Object.assign( new Target(), this ) : this
+    
+    Object.assign( self, entity )
+  
+    Object.defineProperties( self, Object.getOwnPropertyDescriptors( Bridge.prototype ) )
+  
+    Object.defineProperty( self, BRIDGE_IDENTIFY, Object.getOwnPropertyDescriptor( Bridge, BRIDGE_IDENTIFY ) )
+  
+    Object.defineProperty( self, BRIDGE_STATIC, Bridge )
+  
+    return self
+  } ) as AnyBridge
 
-  Object.defineProperty( bridge, BRIDGE_IDENTIFY, {
-    value: records.register( { bridge, options }, options.identifier ),
+  const Bridge = this[options.name]
+
+  Object.defineProperty( Bridge, 'op', { value: Operators, enumerable: false, writable: false, configurable: false } )
+
+  Object.defineProperty( Bridge, BRIDGE_IDENTIFY, {
+    value: records.register( { bridge: Bridge, options }, options.identifier ),
     configurable: false,
     writable: false,
     enumerable: false,
   } )
 
-  Object.defineProperties( bridge, Object.getOwnPropertyDescriptors( statics ) )
-  Object.defineProperties( bridge.prototype, Object.getOwnPropertyDescriptors( methods ) )
+  Object.defineProperties( Bridge, Object.getOwnPropertyDescriptors( statics ) )
+  Object.defineProperties( Bridge.prototype, Object.getOwnPropertyDescriptors( methods ) )
 
   if ( options.prototype )
-    Object.defineProperties( bridge.prototype, Object.getOwnPropertyDescriptors( options.prototype ) )
+    Object.defineProperties( Bridge.prototype, Object.getOwnPropertyDescriptors( options.prototype ) )
 
   if ( options.static )
-    Object.defineProperties( bridge, Object.getOwnPropertyDescriptors( options.static ) )
+    Object.defineProperties( Bridge, Object.getOwnPropertyDescriptors( options.static ) )
 
-  return bridge as Bridge<E, S, P>
-}
+  delete this[options.name]
+
+  return Bridge as Bridge<E, S, P>
+} ).bind( {} )
 
 declare namespace factoryBridge {
   export interface TwoCombineSides {
