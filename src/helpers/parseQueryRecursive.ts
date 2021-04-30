@@ -3,6 +3,11 @@ import { Operators } from '../tools/operators'
 const numberRegExp = /^[0-9]+(\.[0-9]+)?$/
 
 const parseQueryRecursive = <T>( object: T, fromJSON = false ): T => {
+  if ( typeof object === 'string' ) try {
+    return parseQueryRecursive( JSON.parse( object ) )
+  } catch {
+    return object
+  }
   if ( typeof object !== 'object' || object === null ) return object
   if ( Array.isArray( object ) ) {
     return object.map( value => {
