@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express'
-import { bridgeAttach, bridgeInstanceAttach } from '../../handlers/helpers'
+import { bridgeAttach } from '../../handlers/helpers'
 import { createHandlerPaths } from '../../helpers'
 import { getExpress } from '../../helpers/internals/getExpress'
 import { AnyBridge } from '../../typings/bridge'
@@ -10,7 +10,7 @@ import { HTTP_METHODS_NAMES, HTTP_METHODS_MAP, BASE_PATHS, STATIC_METHODS_KEYS, 
 
 const standard = <
   T extends typeof STATIC_METHODS_KEYS | typeof INSTANCE_METHODS_KEYS,
-  G extends { [K in T extends ( infer M )[] ? M : never]: ( bridge: AnyBridge, query: any, body: any, params: any, options: RouteOptions ) => any }
+  G extends { [K in T extends ( infer M )[] ? M : never]: ( bridge: AnyBridge, req: Request, res: Response, next: NextFunction, options: RouteOptions ) => any }
 >(
   keys: T,
   groups: G,

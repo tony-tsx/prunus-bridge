@@ -1,7 +1,8 @@
 import { RequestHandler, Router, Request, Response, NextFunction } from "express"
 import { PathParams } from 'express-serve-static-core'
 import { FindManyOptions, FindOneOptions, RemoveOptions, SaveOptions } from "typeorm"
-import { AnyBridgeInstance, AnyBridgeStatic } from "./bridge"
+import { AnySchema } from "yup"
+import { AnyBridgeInstance, AnyBridgeStatic, Bridge } from "./bridge"
 
 interface RouteOptions extends globalThis.Prunus.RouteOptions {
   handlers?: RouteOptions.Handlers
@@ -18,6 +19,11 @@ interface RouteOptions extends globalThis.Prunus.RouteOptions {
   paths?: RouteOptions.RecordMethods<PathParams, true>
   middlewares?: RouteOptions.RecordMethods<RequestHandler, true>
   replaces?: RouteOptions.RecordMethods<RequestHandler, true>
+  schemas?: RouteOptions.RecordMethods<AnySchema, true>
+  interceptors?: {
+    [K in RouteOptions.MethodsNames]?:
+      ( args: RouteOptions.Arguments<K>, req: Request, res: Response, next: NextFunction ) => any
+  }
   responses?: {
     [K in RouteOptions.MethodsNames]?: ( data: RouteOptions.Return<K>, req: Request, res: Response, next: NextFunction ) => void
   }
@@ -27,12 +33,14 @@ namespace RouteOptions {
   export type HandlersMiddlewares = {
     [K in keyof AnyBridgeStatic]?: RequestHandler
   }
-  export type MethodsNames = keyof AnyBridgeStatic & keyof AnyBridgeInstance
-  export type Return<T extends MethodsNames> =
-    T extends keyof AnyBridgeStatic ?
-      ReturnType<AnyBridgeStatic[T]> :
-      T extends keyof AnyBridgeInstance ?
-        ReturnType<AnyBridgeInstance[T]> : never
+  export type MethodsNames = keyof AnyBridgeStatic | keyof Bridge.Instance.Methods<{ [key: string]: any }, any, any>
+  export type Arguments<T extends MethodsNames> = T extends keyof AnyBridgeStatic ?
+    Parameters<AnyBridgeStatic[T]> : T extends keyof AnyBridgeInstance ?
+    Parameters<AnyBridgeInstance[T]> : never
+
+  export type Return<T extends MethodsNames> = T extends keyof AnyBridgeStatic ?
+    ReturnType<AnyBridgeStatic[T]> : T extends keyof AnyBridgeInstance ?
+    ReturnType<AnyBridgeInstance[T]> : never
   export type RecordMethods<T, O extends boolean = false> = O extends true
     ? Partial<Record<MethodsNames, T>>
     : Record<MethodsNames, T>
@@ -42,7 +50,7 @@ namespace RouteOptions {
   export type Handlers = Partial<
     Record<
       Methods,
-      Record<string, RequestHandler<any, any, any, any>>
+      Record<string, RequestHandler<any, any, any, any> | RequestHandler<any, any, any, any>[]>
     >
   >
 
