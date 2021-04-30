@@ -36,9 +36,9 @@ namespace Bridge {
   }
 
   export interface Constructor<E, S, P> extends Static<E, S, P> {
-    new ( properties?: Partial<Instance.Data<E>> ): Instance<E, S, P>
-    ( properties?: Partial<Instance.Data<E>> ): Instance<E, S, P>
-    ( collection?: Partial<Instance.Data<E>>[] ): Instance<E, S, P>[]
+    new ( properties?: QueryDeepPartialEntity<Instance.Data<E>> ): Instance<E, S, P>
+    ( properties?: QueryDeepPartialEntity<Instance.Data<E>> ): Instance<E, S, P>
+    ( collection?: QueryDeepPartialEntity<Instance.Data<E>>[] ): Instance<E, S, P>[]
     [BRIDGE_IDENTIFY]: keyof any
     op: typeof Operators
   }
