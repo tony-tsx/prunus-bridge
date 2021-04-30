@@ -1,6 +1,6 @@
 {
   "name": "@prunus/bridge",
-  "version": "0.0.0-0.6.12",
+  "version": "0.0.0-0.6.13",
   "main": "dist/index.js",
   "repository": "https://github.com/tony-tsx/prunus-bridge.git",
   "author": "Tony <tony.js@zoho.eu>",
