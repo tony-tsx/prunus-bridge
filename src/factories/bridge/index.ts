@@ -13,7 +13,7 @@ const BRIDGE_STATIC = Symbol( 'bridge-static' )
 
 interface BridgeLib { [key: string]: AnyBridge }
 
-let factoryBridge = function <E, S = {}, P = {}>(
+let factoryBridge: factoryBridge = function <E, S = {}, P = {}>(
   this: BridgeLib,
   options: factoryBridge.Options<E, S, P>
 ): Bridge<E, S, P> {
@@ -72,6 +72,10 @@ let factoryBridge = function <E, S = {}, P = {}>(
 }
 
 factoryBridge = factoryBridge.bind( {} )
+
+interface factoryBridge {
+  <E, S = {}, P = {}>( options: factoryBridge.Options<E, S, P> ): Bridge<E, S, P>
+}
 
 declare namespace factoryBridge {
   export interface TwoCombineSides {
