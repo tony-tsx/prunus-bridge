@@ -39,3 +39,13 @@ declare global {
     }
   }
 }
+
+const B = Bridge.create( {
+  name: 'Test',
+  getTypeORMEntity: async () => class T {}
+} )
+Bridge.handler( B, {
+  responses: {
+    find: ( response, req, res, next ) => {},
+  }
+} )

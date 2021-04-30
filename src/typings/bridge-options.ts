@@ -1,45 +1,12 @@
 import { AxiosInstance } from 'axios'
-import { RequestHandler } from 'express'
-import { Connection, FindManyOptions, FindOneOptions, RemoveOptions, SaveOptions } from 'typeorm'
+import { Connection } from 'typeorm'
 import { ObjectSchema } from 'yup'
 import { MixedSchema } from 'yup/lib/mixed'
 
 import { SERVER_PROPERTY, CLIENT_PROPERTY } from '../factories/bridge'
-import { AnyBridgeStatic, Bridge } from './bridge'
+import { Bridge } from './bridge'
 
 namespace BridgeOptions {
-  export namespace Route {
-    export type HandlersMiddlewares = {
-      [K in keyof AnyBridgeStatic]?: RequestHandler
-    }
-    type Methods = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'options'
-    export type Handlers = Partial<
-      Record<
-        Methods,
-        Record<
-          string,
-          RequestHandler<any, any, any, any>
-        >
-      >
-    >
-    export type DefaultsOptions = {
-      save?: SaveOptions
-      recover?: SaveOptions
-      remove?: RemoveOptions
-      softRemove?: SaveOptions
-
-      find?: FindManyOptions
-      findByIds?: FindManyOptions
-      findOne?: FindOneOptions
-      findOneOrFail?: FindOneOptions
-      findAndCount?: FindManyOptions | FindOneOptions
-    }
-  }
-  export interface Route {
-    handlersMiddlewares?: Route.HandlersMiddlewares
-    handlers?: Route.Handlers
-    defaultOptions?: Route.DefaultsOptions 
-  }
   export interface SidesCombine {
     [SERVER_PROPERTY]: any
     [CLIENT_PROPERTY]: any
@@ -80,7 +47,6 @@ interface BridgeOptions<E, S, P> extends Prunus.GlobalBridgeOptions<E, S, P> {
   prototype?: BridgeOptions.DelegateThis<P, Bridge.Instance<E, S, P>>
   static?: BridgeOptions.DelegateThis<S, Bridge<E, S, P>>
   schema?: ObjectSchema<any, any, any, any> | MixedSchema<any, any, any>
-  routeOptions?: BridgeOptions.Route
 }
 
 declare global {

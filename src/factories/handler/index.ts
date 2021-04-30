@@ -1,47 +1,81 @@
-import { Request, Router } from 'express'
-import { handler } from '../..'
-import { bridgeAttach } from '../../handlers/helpers'
-import { getBridgeHandlers } from '../../helpers/getBridgeHandlers'
+import { NextFunction, Request, Response, Router } from 'express'
+import { bridgeAttach, bridgeInstanceAttach } from '../../handlers/helpers'
+import { createHandlerPaths } from '../../helpers'
 import { getExpress } from '../../helpers/internals/getExpress'
-import { getStandardBridgeRoute } from '../../helpers/internals/getStandardBridgeRoute'
 import { AnyBridge } from '../../typings/bridge'
-import { factoryAllBridgeHandler } from './all'
+import { RouteOptions } from '../../typings/route-options'
+import *  as methods from './methods'
+import * as statics from './statics'
+import { HTTP_METHODS_NAMES, HTTP_METHODS_MAP, BASE_PATHS, STATIC_METHODS_KEYS, INSTANCE_METHODS_KEYS, METHODS_KEYS } from './constants'
+
+const standard = <
+  T extends typeof STATIC_METHODS_KEYS | typeof INSTANCE_METHODS_KEYS,
+  G extends { [K in T extends ( infer M )[] ? M : never]: ( bridge: AnyBridge, query: any, body: any, params: any, options: RouteOptions ) => any }
+>(
+  keys: T,
+  groups: G,
+  options: RouteOptions,
+  route: Router,
+) => {
+  keys.forEach( ( method: any ) => {
+    const http = HTTP_METHODS_NAMES.find( http => HTTP_METHODS_MAP[http].includes( method ) )
+
+    if ( !http ) throw new Error( `${method} not find http method` )
+
+    const isBase = BASE_PATHS.includes( method )
+
+    const path = createHandlerPaths( options.paths?.[method], method, isBase ? '/' : null )
+
+    const handler = options.replaces[method] ? options.replaces[method] :
+      ( req: Request, res: Response, next: NextFunction ) => {
+        if ( method in groups )
+          groups[method]( req.bridge, req.query, req.body, req.params, options )
+            .then( ( data: any ) => {
+              if ( options.responses?.[method] )
+                return options.responses?.[method]( data, req, res, next )
+              res.json( data )
+            } )
+            .catch( next )
+
+        else next()
+      }
+
+    route[http]( path, options.middlewares?.[method], handler )
+  } )
+}
 
 const factoryHandler = <T extends AnyBridge>(
   bridge: T,
-  { beforeBridgeAttach, beforeBridgeHandlersAttach, beforeStandardHandlersAttach, afterSetup }: {
-    beforeBridgeAttach?: ( router: Router ) => void
-    beforeBridgeHandlersAttach?: ( router: Router ) => void
-    beforeStandardHandlersAttach?: ( router: Router ) => void
-    afterSetup?: ( router: Router ) => void
-  } = {},
+  options: RouteOptions = {},
 ) => {
-  const handler = getExpress.sync().Router()
+  const route = getExpress.sync().Router()
 
-  beforeBridgeAttach?.( handler )
-  handler.use( bridgeAttach( bridge ) )
+  options.beforeBridgeAttach?.( route )
+  route.use( bridgeAttach( bridge ) )
+  options.afterBridgeAttach?.( route )
 
-  beforeBridgeHandlersAttach?.( handler )
-  handler.use( getBridgeHandlers( bridge ) )
+  options.beforeBridgeHandlersAttach?.( route )
+  Object.entries( options.handlers ?? {} ).forEach( ( [ method, paths ] ) => {
+    Object.entries( paths ).forEach( ( [ path, handler ] ) => handler[method]( path, handler ) )
+  } )
+  options.afterBridgeHandlersAttach?.( route )
 
-  beforeStandardHandlersAttach?.( handler )
-  handler.use( getStandardBridgeRoute() )
+  options.beforeStandardHandlersAttach?.( route )
+  standard( STATIC_METHODS_KEYS, statics, options, route )
+  standard( INSTANCE_METHODS_KEYS, methods, options, route )
+  options.afterStandardHandlersAttach?.( route )
 
-  afterSetup( handler )
-  return handler
+  options.afterSetup?.( route )
+  return route
 }
 
-factoryHandler.all = factoryAllBridgeHandler
-
-factoryHandler.matchWithChain = ( parameterKey: string | ( ( req: Request ) => any ) ) => {
-  return getStandardBridgeRoute.match( parameterKey )
-}
-
-factoryHandler.match = <T extends AnyBridge>( parameterKey: string | ( ( req: Request ) => any ), bridge: T ) => {
-  const handler = getExpress.sync().Router()
-  handler.use( bridgeAttach( bridge ) )
-  handler.use( getStandardBridgeRoute.match( parameterKey ) )
-  return handler
+factoryHandler.match = <T extends AnyBridge>(
+  parameterKey: string | ( ( req: Request ) => any ),
+  bridge: T,
+  options: RouteOptions = {},
+) => {
+  const route = getExpress.sync().Router()
+  return route
 }
 
 declare namespace factoryHandler {}

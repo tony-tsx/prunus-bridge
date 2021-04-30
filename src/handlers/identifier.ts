@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express'
 import { BadRequest } from 'http-errors'
 
-import { getDefaultRouteOptions as option } from '../helpers/getDefaultRouteOptions'
 import { parseQueryRecursive as parse } from '../helpers/parseQueryRecursive'
 
 const find: RequestHandler = ( req, res ) => {
@@ -11,7 +10,7 @@ const update: RequestHandler = ( req, res, next ) => {
   if ( !req.body || !Object.keys( req.body ).length )
     next( new BadRequest( 'empty body' ) )
   const query = parse( req.query )
-  const defaultOption = option( req.bridge, 'save' )
+  const defaultOption = {}
   const options = Object.assign( query, defaultOption )
   Object.assign( req.entity, req.body )
   req.entity.save( options )
@@ -20,7 +19,7 @@ const update: RequestHandler = ( req, res, next ) => {
 }
 const remove: RequestHandler = ( req, res, next ) => {
   const query = parse( req.query )
-  const defaultOption = option( req.bridge, 'remove' )
+  const defaultOption = {}
   const options = Object.assign( query, defaultOption )
   req.entity.remove( options )
     .then( res.json.bind( res ) )
@@ -29,7 +28,7 @@ const remove: RequestHandler = ( req, res, next ) => {
 
 const softRemove: RequestHandler = ( req, res, next ) => {
   const query = parse( req.query )
-  const defaultOption = option( req.bridge, 'softRemove' )
+  const defaultOption = {}
   const options = Object.assign( query, defaultOption )
   req.entity.softRemove( options )
     .then( res.json.bind( res ) )
