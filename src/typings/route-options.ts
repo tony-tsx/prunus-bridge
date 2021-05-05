@@ -17,7 +17,7 @@ interface RouteOptions extends globalThis.Prunus.RouteOptions {
   afterSetup?: ( router: Router ) => void
 
   paths?: RouteOptions.RecordMethods<PathParams, true>
-  middlewares?: RouteOptions.RecordMethods<RequestHandler, true>
+  middlewares?: RouteOptions.RecordMethods<RequestHandler | RequestHandler[], true>
   replaces?: RouteOptions.RecordMethods<RequestHandler, true>
   schemas?: RouteOptions.RecordMethods<AnySchema, true>
   interceptors?: {
