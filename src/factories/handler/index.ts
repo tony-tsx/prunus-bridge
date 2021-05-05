@@ -26,10 +26,10 @@ const standard = <
 
     const path = createHandlerPaths( options.paths?.[method], method, isBase ? '/' : null )
 
-    const handler = options.replaces[method] ? options.replaces[method] :
+    const handler = options.replaces?.[method] ? options.replaces[method] :
       ( req: Request, res: Response, next: NextFunction ) => {
         if ( method in groups )
-          groups[method]( req.bridge, req.query, req.body, req.params, options )
+          groups[method]( req.bridge, req, res, next, options )
             .then( ( data: any ) => {
               if ( options.responses?.[method] )
                 return options.responses?.[method]( data, req, res, next )
@@ -56,7 +56,7 @@ const factoryHandler = <T extends AnyBridge>(
 
   options.beforeBridgeHandlersAttach?.( route )
   Object.entries( options.handlers ?? {} ).forEach( ( [ method, paths ] ) => {
-    Object.entries( paths ).forEach( ( [ path, handler ] ) => handler[method]( path, handler ) )
+    Object.entries( paths ?? {} ).forEach( ( [ path, handler ] ) => route[method]( path, handler ) )
   } )
   options.afterBridgeHandlersAttach?.( route )
 

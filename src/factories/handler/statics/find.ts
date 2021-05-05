@@ -12,7 +12,7 @@ const find = async ( bridge: AnyBridge, req: Request<any, any, any, any>, res: R
   const defaultOptions = routeOptions.defaultOptions?.['find'] ?? {}
   const receiveOptions = parse( req.query )
   const options = union( defaultOptions, receiveOptions ) as FindManyOptions
-  const schema = routeOptions.schemas.find ? Promise.resolve( routeOptions.schemas.find ) : schemas.findManyConditionsOrOptions( bridge )
+  const schema = routeOptions.schemas?.find ? Promise.resolve( routeOptions.schemas.find ) : schemas.findManyConditionsOrOptions( bridge )
   return schema
     .then( schema => schema.validate( options ) )
     .then( options => {

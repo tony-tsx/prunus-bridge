@@ -1,10 +1,9 @@
 import { extractKeys } from "../../helpers/extractKeys"
-import { methods } from "../bridge/methods"
+import { METHODS_KEYS as INSTANCE_METHODS_KEYS } from "../bridge/methods"
 import { statics } from "../bridge/statics"
+export { METHODS_KEYS as INSTANCE_METHODS_KEYS } from "../bridge/methods"
 
 export const STATIC_METHODS_KEYS = extractKeys( statics )
-
-export const INSTANCE_METHODS_KEYS = extractKeys( methods )
 
 export const METHODS_KEYS = [ ...INSTANCE_METHODS_KEYS, ...STATIC_METHODS_KEYS ]
 

@@ -1,4 +1,5 @@
 import { createBridgeMethodRequestUri } from '../../helpers/createBridgeMethodRequestUri'
+import { extractKeys } from '../../helpers/extractKeys'
 import { useTypeormSystemDelegate } from '../../helpers/useTypeormSystemDelegate'
 import { Bridge } from '../../typings/bridge'
 
@@ -61,8 +62,10 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
   }
 }
 
-Object.keys( methods ).forEach( key => {
+const METHODS_KEYS = extractKeys( methods )
+
+METHODS_KEYS.forEach( key => {
   Object.defineProperty( methods, key, { writable: false, enumerable: false } )
 } )
 
-export { methods }
+export { methods, METHODS_KEYS }

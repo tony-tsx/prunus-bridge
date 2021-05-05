@@ -11,6 +11,8 @@ const factoryCommand = ( bridge: AnyBridge, name?: string ) => {
 
   command.arguments( '<id> [method]' )
 
+  command.addHelpCommand( '[method]', 'find, remove, softRemove, save' )
+
   command.action( async ( identifier: any, method ) => {
     const entity = await bridge.findOne( identifier )
     if ( !entity ) return console.log( `not find ${bridge.name} with ${identifier}` )

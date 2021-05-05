@@ -4,13 +4,20 @@ A library for fast implementation of a rest api integrated with typeorm, express
 
 ---
 
-## Install
+## Install server side
 ```sh
-yarn add @prunus/bridge express axios;
+yarn add @prunus/bridge express te2ys yup typeorm;
 yarn add -D @types/express;
 # or
-npm install --save @prunus/bridge express axios;
+npm install --save @prunus/bridge express te2ys yup typeorm;
 npm install --save-dev @types/express;
+```
+
+## Install client side
+```sh
+yarn add @prunus/bridge axios
+# or
+npm install --save @prunus/bridge axios
 ```
 
 ### Using webpack
