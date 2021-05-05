@@ -10,7 +10,7 @@ type Any = { [key: string]: any }
 const insert: Bridge.Static.Insert<{}, {}, {}> = {
   async insert( query: QueryDeepPartialEntity<Any> | QueryDeepPartialEntity<Any>[] ) {
     return useTypeormSystemDelegate( this, {
-      system: repository => repository.insert( query ),
+      system: repository => repository.insert( repository.create( query ) ),
       client: async axios => {
         const uri = createBridgeMethodRequestUri( this, 'insert' )
         const response = await axios.post<InsertResult>( uri, query )

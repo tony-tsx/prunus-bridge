@@ -48,9 +48,7 @@ const methods: Bridge.Instance.Methods<Any, Any, Any> = {
   async softRemove( options ) {
     return useTypeormSystemDelegate( this, {
       system: async repository => {
-        console.log( 'system softRemove options', options )
         const entity = await repository.softRemove( repository.create( this ), options )
-        console.log( 'system softRemove result', entity )
         return Object.assign( this, entity )
       },
       client: async axios => {
