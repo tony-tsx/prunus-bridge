@@ -39,8 +39,9 @@ const standard = <
 
         else next()
       }
-
-    route[http]( path, options.middlewares?.[method], handler )
+    if ( options.middlewares?.[method] )
+      route[http]( path, options.middlewares[method], handler )
+    else route[http]( path, handler )
   } )
 }
 
